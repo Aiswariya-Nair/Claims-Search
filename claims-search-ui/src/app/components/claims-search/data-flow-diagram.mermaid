@@ -1,0 +1,13 @@
+```mermaid
+graph TD
+    A[User Clicks 'Add Test Claim' Button] --> B[Frontend Calls createClaim Method]
+    B --> C[API Service Sends POST Request to /claims Endpoint]
+    C --> D[Backend Receives Request at ClaimsController]
+    D --> E[Controller Passes Data to ClaimsService]
+    E --> F[Service Converts ClaimDto to Claim Entity]
+    F --> G[Service Saves Claim to Database via ClaimRepository]
+    G --> H[Service Converts Saved Claim Back to DTO]
+    H --> I[Service Returns Created Claim to Frontend]
+    I --> J[Frontend Refreshes Claims List]
+    J --> K[New Claim Appears in UI]
+```

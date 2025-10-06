@@ -1,0 +1,137 @@
+<!-- Enhanced Claims Grid with All Columns and Horizontal Scroll -->
+<div class="claims-grid-container">
+  <div class="grid-table">
+    <div class="table-wrapper">
+      <table class="claims-table">
+        <thead>
+          <tr>
+            <th class="sticky-column">Select</th>
+            <th>Claim</th>
+            <th>Claim ID</th>
+            <th>ADJ Office</th>
+            <th>Claimant</th>
+            <th>SSN</th>
+            <th>Status</th>
+            <th>Incident Date</th>
+            <th>Type</th>
+            <th>Broker Name</th>
+            <th>Insured</th>
+            <th>Supervisor</th>
+            <th>Accepted</th>
+            <th>Denied</th>
+            <th>Closed</th>
+            <th>Employee#</th>
+            <th>Jurisdiction</th>
+            <th>Jurisdiction Claim Number</th>
+            <th>Body Part</th>
+            <th>Org1</th>
+            <th>Org2</th>
+            <th>Add Date</th>
+            <th class="sticky-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let claim of claims; trackBy: trackByClaim" class="claim-row">
+            <td class="sticky-column">
+              <input 
+                type="checkbox" 
+                class="claim-checkbox" 
+                [value]="claim.id || claim.claimNumber"
+                [checked]="isClaimSelected(claim)"
+                (change)="onClaimSelect($event, claim)"
+              >
+            </td>
+            <td>{{ claim.claimNumber }}</td>
+            <td>{{ claim.claimId || claim.id || '-' }}</td>
+            <td>{{ claim.adjustingOfficeDesc || claim.adjustingOfficeCode || '-' }}</td>
+            <td>{{ claim.claimantName || claim.claimantFirstOrEntityName || '-' }}</td>
+            <td>{{ claim.ssn ? formatSSN(claim.ssn) : '-' }}</td>
+            <td>
+              <span class="status-badge" [class]="'status-' + (claim.status || 'unknown').toLowerCase()">
+                {{ claim.status || 'Unknown' }}
+              </span>
+            </td>
+            <td>{{ claim.incidentDate | date:'shortDate' }}</td>
+            <td>{{ claim.type || claim.insuranceTypeDesc || '-' }}</td>
+            <td>{{ claim.brokerName || '-' }}</td>
+            <td>{{ claim.insured || claim.insuredName || '-' }}</td>
+            <td>{{ claim.supervisor || '-' }}</td>
+            <td>{{ claim.accepted || '-' }}</td>
+            <td>{{ claim.denied || '-' }}</td>
+            <td>{{ claim.claimClosedDate | date:'shortDate' }}</td>
+            <td>{{ claim.employeeNumber || '-' }}</td>
+            <td>{{ claim.jurisdictionDesc || claim.jurisdictionCode || '-' }}</td>
+            <td>{{ claim.jurisdictionClaimNumber || '-' }}</td>
+            <td>{{ '-' }}</td>
+            <td>{{ claim.org1Code || '-' }}</td>
+            <td>{{ claim.org2Code || '-' }}</td>
+            <td>{{ claim.addDate | date:'shortDate' }}</td>
+            <td class="sticky-actions">
+              <div class="action-buttons">
+                <button 
+                  class="btn btn-sm btn-primary"
+                  (click)="onViewClaim(claim)"
+                  title="View Claim Details"
+                >
+                  View
+                </button>
+                <button 
+                  class="btn btn-sm btn-secondary"
+                  (click)="onEditClaim(claim)"
+                  title="Edit Claim"
+                >
+                  Edit
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-container" *ngIf="totalRecords > pageSize">
+    <div class="pagination-info">
+      Showing {{ getStartRecord() }} to {{ getEndRecord() }} of {{ totalRecords }} claims
+    </div>
+    
+    <div class="pagination-controls">
+      <button 
+        class="btn btn-sm btn-outline"
+        [disabled]="currentPage === 1"
+        (click)="goToPage(currentPage - 1)"
+      >
+        Previous
+      </button>
+      
+      <span class="page-numbers">
+        <button 
+          *ngFor="let page of getVisiblePages()"
+          class="btn btn-sm"
+          [class.btn-primary]="page === currentPage"
+          [class.btn-outline]="page !== currentPage"
+          (click)="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+      </span>
+      
+      <button 
+        class="btn btn-sm btn-outline"
+        [disabled]="currentPage === getTotalPages()"
+        (click)="goToPage(currentPage + 1)"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="claims.length === 0">
+    <div class="empty-content">
+      <h3>No Claims Found</h3>
+      <p>Try adjusting your search criteria or filters.</p>
+    </div>
+  </div>
+</div>

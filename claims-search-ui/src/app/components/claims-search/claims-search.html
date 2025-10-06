@@ -1,0 +1,338 @@
+<div class="claims-search-container">
+  <!-- Header Section -->
+  <div class="search-header">
+    <div class="header-content">
+      <h1 class="page-title">
+        <i class="icon-search">🔍</i>
+        Claims Search Portal
+      </h1>
+      <p class="page-subtitle">Find and manage insurance claims efficiently</p>
+    </div>
+    <div class="connection-info">
+      <div class="connection-status" [class.connected]="backendConnected" [class.disconnected]="!backendConnected">
+        <span class="status-icon">{{ backendConnected ? '🟢' : '🔴' }}</span>
+        <span class="status-text">
+          {{ backendConnected ? 'Backend Connected' : 'Backend Disconnected' }}
+        </span>
+      </div>
+      <button 
+        type="button" 
+        class="btn btn-refresh"
+        (click)="testBackendConnection()"
+        title="Test backend connection"
+      >
+        <span class="btn-icon">🔌</span>
+        Test Connection
+      </button>
+      <button 
+        type="button" 
+        class="btn btn-primary"
+        (click)="addTestClaim()"
+        title="Add a test claim to the database"
+        *ngIf="backendConnected"
+      >
+        <span class="btn-icon">➕</span>
+        Add Test Claim
+      </button>
+    </div>
+  </div>
+
+  <!-- Search Form Card -->
+  <div class="search-card">
+    <div class="card-header">
+      <h2 class="card-title">
+        <i class="card-icon">📋</i>
+        Search Criteria
+      </h2>
+    </div>
+
+    <form [formGroup]="searchForm" (ngSubmit)="searchClaims()" class="search-form">
+      <!-- Quick Search -->
+      <div class="search-section">
+        <div class="section-header">
+          <h3 class="section-title">Quick Search</h3>
+          <span class="section-description">Search across all fields</span>
+        </div>
+        <div class="form-group full-width">
+          <div class="input-wrapper">
+            <span class="input-icon">🔍</span>
+            <input 
+              type="text" 
+              id="q"
+              formControlName="q" 
+              placeholder="Search by claim number, policy number, or claimant name..."
+              class="form-control search-input"
+            />
+            <button type="submit" class="search-btn" [disabled]="loading" title="Search claims">
+              <span *ngIf="loading" class="loading-spinner">🔄</span>
+              <span *ngIf="!loading">🔍</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced Filters -->
+      <div class="search-section">
+        <div class="section-header">
+          <h3 class="section-title">Advanced Filters</h3>
+          <span class="section-description">Narrow down your search with specific criteria</span>
+        </div>
+        
+        <div class="filters-grid">
+          <div class="form-group">
+            <label for="claimNumber" class="form-label">
+              <i class="label-icon">📄</i>
+              Claim Number
+            </label>
+            <input 
+              type="text" 
+              id="claimNumber"
+              formControlName="claimNumber" 
+              placeholder="Enter claim number"
+              class="form-control"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="policyNumber" class="form-label">
+              <i class="label-icon">📜</i>
+              Policy Number
+            </label>
+            <input 
+              type="text" 
+              id="policyNumber"
+              formControlName="policyNumber" 
+              placeholder="Enter policy number"
+              class="form-control"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="claimantName" class="form-label">
+              <i class="label-icon">👤</i>
+              Claimant Name
+            </label>
+            <input 
+              type="text" 
+              id="claimantName"
+              formControlName="claimantName" 
+              placeholder="Enter claimant name"
+              class="form-control"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="ssn" class="form-label">
+              <i class="label-icon">🔢</i>
+              SSN
+            </label>
+            <input 
+              type="text" 
+              id="ssn"
+              formControlName="ssn" 
+              placeholder="XXX-XX-XXXX"
+              class="form-control"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="incidentDateStart" class="form-label">
+              <i class="label-icon">📅</i>
+              Incident Date From
+            </label>
+            <input 
+              type="date" 
+              id="incidentDateStart"
+              formControlName="incidentDateStart" 
+              class="form-control"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="incidentDateEnd" class="form-label">
+              <i class="label-icon">📅</i>
+              Incident Date To
+            </label>
+            <input 
+              type="date" 
+              id="incidentDateEnd"
+              formControlName="incidentDateEnd" 
+              class="form-control"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="status" class="form-label">
+              <i class="label-icon">📊</i>
+              Status
+            </label>
+            <div class="select-wrapper">
+              <select 
+                id="status"
+                formControlName="status" 
+                multiple
+                class="form-control select-multiple"
+              >
+                <option value="open">📖 Open</option>
+                <option value="closed">✅ Closed</option>
+                <option value="pending">⏳ Pending</option>
+                <option value="settled">💰 Settled</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="lossState" class="form-label">
+              <i class="label-icon">🌎</i>
+              Loss State
+            </label>
+            <div class="select-wrapper">
+              <select 
+                id="lossState"
+                formControlName="lossState" 
+                multiple
+                class="form-control select-multiple"
+              >
+                <option value="CA">🌴 California</option>
+                <option value="TX">🤠 Texas</option>
+                <option value="FL">🏖️ Florida</option>
+                <option value="NY">🗽 New York</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-section">
+        <div class="primary-actions">
+          <button 
+            type="submit" 
+            class="btn btn-primary btn-lg"
+            [disabled]="loading"
+            title="Search for claims"
+          >
+            <span *ngIf="loading" class="btn-icon loading-spinner">🔄</span>
+            <span *ngIf="!loading" class="btn-icon">🔍</span>
+            Search Claims
+          </button>
+          
+          <button 
+            type="button" 
+            class="btn btn-secondary"
+            (click)="resetForm()"
+            [disabled]="loading"
+            title="Clear all search filters"
+          >
+            <span class="btn-icon">🗑️</span>
+            Reset Filters
+          </button>
+        </div>
+
+        <div class="export-actions">
+          <span class="export-label">📤 Export Results:</span>
+          <div class="export-buttons">
+            <button 
+              type="button" 
+              class="btn btn-export btn-csv"
+              (click)="exportData('csv')"
+              [disabled]="claims.length === 0 || loading"
+              title="Export search results as CSV file"
+            >
+              <span class="btn-icon">📊</span>
+              CSV
+            </button>
+            
+            <button 
+              type="button" 
+              class="btn btn-export btn-excel"
+              (click)="exportData('xlsx')"
+              [disabled]="claims.length === 0 || loading"
+              title="Export search results as Excel file"
+            >
+              <span class="btn-icon">📈</span>
+              Excel
+            </button>
+            
+            <button 
+              type="button" 
+              class="btn btn-export btn-json"
+              (click)="exportData('json')"
+              [disabled]="claims.length === 0 || loading"
+              title="Export search results as JSON file"
+            >
+              <span class="btn-icon">📋</span>
+              JSON
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Results Section -->
+  <div class="results-section" *ngIf="!loading">
+    <div class="results-header">
+      <div class="results-info">
+        <h3 class="results-title">
+          <i class="results-icon">📋</i>
+          Search Results
+        </h3>
+        <div class="results-count">
+          <span class="count-badge">{{ totalRecords }}</span>
+          <span class="count-text">{{ totalRecords === 1 ? 'claim' : 'claims' }} found</span>
+        </div>
+      </div>
+      
+      <div class="results-actions" *ngIf="claims.length > 0">
+        <button class="btn btn-outline btn-sm" title="Refresh results">
+          <span class="btn-icon">🔄</span>
+          Refresh
+        </button>
+      </div>
+    </div>
+
+    <div class="claims-grid-wrapper" *ngIf="claims.length > 0">
+      <app-claims-grid 
+        [claims]="claims"
+        [totalRecords]="totalRecords"
+        [currentPage]="currentPage"
+        [pageSize]="pageSize"
+        (pageChange)="onPageChange($event)"
+      ></app-claims-grid>
+    </div>
+
+    <div class="no-results" *ngIf="claims.length === 0">
+      <div class="no-results-content">
+        <div class="no-results-icon">🔍❌</div>
+        <h3 class="no-results-title">No Claims Found</h3>
+        <p class="no-results-message">We couldn't find any claims matching your search criteria.</p>
+        <div class="no-results-suggestions">
+          <h4>Try:</h4>
+          <ul>
+            <li>🔍 Broadening your search terms</li>
+            <li>📅 Adjusting the date range</li>
+            <li>🗑️ Removing some filters</li>
+            <li>✅ Checking if the backend is connected</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-section" *ngIf="loading">
+    <div class="loading-content">
+      <div class="loading-animation">
+        <div class="loading-spinner large">⏳</div>
+        <div class="loading-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      <h3 class="loading-title">Searching Claims...</h3>
+      <p class="loading-message">Please wait while we search through the database</p>
+    </div>
+  </div>
+</div>

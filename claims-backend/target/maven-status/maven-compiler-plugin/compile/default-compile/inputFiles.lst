@@ -1,0 +1,9 @@
+C:\Users\hp\Desktop\Claims Project\claims-backend\src\main\java\com\claims\ClaimsBackendApplication.java
+C:\Users\hp\Desktop\Claims Project\claims-backend\src\main\java\com\claims\config\CorsConfig.java
+C:\Users\hp\Desktop\Claims Project\claims-backend\src\main\java\com\claims\controller\ClaimsController.java
+C:\Users\hp\Desktop\Claims Project\claims-backend\src\main\java\com\claims\controller\HealthController.java
+C:\Users\hp\Desktop\Claims Project\claims-backend\src\main\java\com\claims\dto\ClaimDto.java
+C:\Users\hp\Desktop\Claims Project\claims-backend\src\main\java\com\claims\dto\ClaimsResponse.java
+C:\Users\hp\Desktop\Claims Project\claims-backend\src\main\java\com\claims\model\Claim.java
+C:\Users\hp\Desktop\Claims Project\claims-backend\src\main\java\com\claims\repository\ClaimRepository.java
+C:\Users\hp\Desktop\Claims Project\claims-backend\src\main\java\com\claims\service\ClaimsService.java

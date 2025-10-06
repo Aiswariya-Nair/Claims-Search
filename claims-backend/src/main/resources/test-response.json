@@ -1,0 +1,46 @@
+{
+  "total": 2,
+  "totalPages": 1,
+  "pageSize": 2,
+  "page": 0,
+  "items": [
+    {
+      "claimId": 136895137,
+      "claimStatusCode": 1,
+      "claimNumber": "240000821",
+      "examinerCode": "hkhan",
+      "adjustingOfficeCode": "420",
+      "stateCode": "AK",
+      "incidentDate": "2024-03-13T12:00:00",
+      "addDate": "2025-09-13T19:36:53.401771",
+      "policyNumber": "POL012",
+      "claimantName": "Test User",
+      "ssn": "123-45-6789",
+      "status": "Open",
+      "lossState": "AK",
+      "programDesc": "AUTO",
+      "examiner": "John Smith",
+      "insuranceTypeId": 1,
+      "organizationCode": "ORG001"
+    },
+    {
+      "claimId": 136895138,
+      "claimStatusCode": 1,
+      "claimNumber": "240000822",
+      "examinerCode": "jsmith",
+      "adjustingOfficeCode": "421",
+      "stateCode": "CA",
+      "incidentDate": "2024-03-14T12:00:00",
+      "addDate": "2025-09-13T19:36:53.401771",
+      "policyNumber": "POL013",
+      "claimantName": "Another User",
+      "ssn": "987-65-4321",
+      "status": "Open",
+      "lossState": "CA",
+      "programDesc": "HOME",
+      "examiner": "Jane Doe",
+      "insuranceTypeId": 2,
+      "organizationCode": "ORG002"
+    }
+  ]
+}

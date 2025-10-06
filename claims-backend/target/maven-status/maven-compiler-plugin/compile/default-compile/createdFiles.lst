@@ -1,0 +1,10 @@
+com\claims\controller\ClaimsController.class
+com\claims\service\ClaimsService.class
+com\claims\config\CorsConfig.class
+com\claims\ClaimsBackendApplication.class
+com\claims\controller\HealthController.class
+com\claims\model\Claim.class
+com\claims\dto\ClaimsResponse.class
+com\claims\dto\ClaimDto.class
+com\claims\repository\ClaimRepository.class
+com\claims\config\CorsConfig$1.class
