@@ -5,7 +5,7 @@
 -- CREATE DATABASE claims_db;
 
 -- Connect to the claims_db database
-\c claims_dev;
+\c claims_db;
 
 -- Create user (optional, if not using default postgres user)
 -- CREATE USER claims_user WITH PASSWORD 'claims_password';
