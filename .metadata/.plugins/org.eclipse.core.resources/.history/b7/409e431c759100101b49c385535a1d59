@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claims Search</title>
+
+<!-- Font Awesome for button icons -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+    <input type="search" placeholder="Search" class="global-search">
+</header>
+
+<div class="container">
+<form class="search-form">
+
+    <!-- FIRST ROW: claimant name, claim no, dates, ssn, status -->
+    <div class="row">
+        <div class="field claimant-name">
+            <label>Claimant Name:</label>
+            <div class="inline-group">
+                <input type="text" placeholder="First">
+                <input type="text" placeholder="Last">
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Claim Number:</label>
+            <input type="text" placeholder="Search">
+        </div>
+
+        <div class="field">
+            <label>From Incident Date:</label>
+            <input type="date">
+        </div>
+
+        <div class="field">
+            <label>To Incident Date:</label>
+            <input type="date">
+        </div>
+
+        <div class="field">
+            <label>SSN:</label>
+            <input type="text" placeholder="XXX-XX-XXXX">
+        </div>
+
+        <div class="field">
+            <label>Status:</label>
+            <div class="checkboxes">
+                <label><input type="checkbox"> Open</label>
+                <label><input type="checkbox"> Re-Op</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECOND ROW -->
+    <div class="row">
+        <div class="field">
+            <label>Employee Number:</label>
+            <input type="text" placeholder="Search">
+        </div>
+        <div class="field">
+            <label>Affiliate Claim Number:</label>
+            <input type="text" placeholder="Search">
+        </div>
+        <div class="field">
+            <label>Examiner:</label>
+            <input type="text" placeholder="Search">
+        </div>
+        <div class="field">
+            <label>Employer:</label>
+            <input type="text" placeholder="Search">
+        </div>
+        <div class="field">
+            <label>Program:</label>
+            <input type="text" placeholder="Search">
+        </div>
+    </div>
+
+    <!-- THIRD ROW -->
+    <div class="row">
+        <div class="field">
+            <label>Claimant Type:</label>
+            <select><option>Select</option></select>
+        </div>
+        <div class="field">
+            <label>Organization 1:</label>
+            <select><option>Select</option></select>
+        </div>
+        <div class="field">
+            <label>Organization 2:</label>
+            <select><option>Select</option></select>
+        </div>
+        <div class="field">
+            <label>Jurisdiction Claim Number:</label>
+            <input type="text" placeholder="Search">
+        </div>
+    </div>
+
+    <!-- FOURTH ROW -->
+    <div class="row">
+        <div class="field">
+            <label>Broker Name:</label>
+            <select><option>Select</option></select>
+        </div>
+        <div class="field">
+            <label>Email Id:</label>
+            <input type="email" placeholder="Search">
+        </div>
+        <div class="field">
+            <label>Phone Number:</label>
+            <input type="text" placeholder="Search">
+        </div>
+        <div class="field">
+            <label>DOB:</label>
+            <input type="date">
+        </div>
+    </div>
+
+    <!-- FIFTH ROW -->
+    <div class="row">
+        <div class="field">
+            <label>Adjusting Office:</label>
+            <select><option>Select</option></select>
+        </div>
+    </div>
+
+    <div class="actions">
+        <button type="button" class="btn primary"><i class="fa fa-search"></i> Search</button>
+        <button type="reset" class="btn danger"><i class="fa fa-rotate-left"></i> Reset</button>
+        <button type="button" class="btn info"><i class="fa fa-download"></i> Download</button>
+    </div>
+</form>
+
+<div class="results">
+    <table>
+        <thead>
+            <tr>
+            	 <th><input type="checkbox">SELECT</th>
+               
+                <th>CLAIM</th>
+                <th>CLAIM ID</th>
+                <th>ADJ OFFICE</th>
+                <th>CLAIMANT</th>
+                <th>SSN</th>
+                <th>STATUS</th>
+                <th>INCIDENT DATE</th>
+                <th>TYPE</th>
+                <th>BROKER NAME</th>
+                <th>INSURED</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+               
+                <td colspan="11">No data</td>
+            </tr>
+        </tbody>
+    </table>
+    <footer class="pager">Showing 0 to 0 of 0 entries</footer>
+</div>
+</div>
+</body>
+</html>

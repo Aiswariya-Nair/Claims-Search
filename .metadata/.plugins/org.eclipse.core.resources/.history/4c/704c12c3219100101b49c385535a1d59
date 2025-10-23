@@ -1,0 +1,73 @@
+package com.claim_search.model;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "claim", schema = "public")
+public class Claim {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "claim_id")
+    private Long claimId;
+    
+    @Column(name = "claim_status_code")
+    private Integer claimStatusCode;
+    
+    @Column(name = "claim_number")
+    private String claimNumber;
+    
+    @Column(name = "examiner_code")
+    private String examinerCode;
+    
+    @Column(name = "adjusting_office_code")
+    private String adjustingOfficeCode;
+    
+    @Column(name = "state_code")
+    private String stateCode;
+    
+    @Column(name = "incident_date")
+    private LocalDateTime incidentDate;
+    
+    @Column(name = "add_date")
+    private LocalDateTime addDate;
+  public Claim() {}
+    
+    public Claim(Long claimId, Integer claimStatusCode, String claimNumber, 
+                String examinerCode, String adjustingOfficeCode, 
+                String stateCode, LocalDateTime incidentDate, LocalDateTime addDate) {
+        this.claimId = claimId;
+        this.claimStatusCode = claimStatusCode;
+        this.claimNumber = claimNumber;
+        this.examinerCode = examinerCode;
+        this.adjustingOfficeCode = adjustingOfficeCode;
+        this.stateCode = stateCode;
+        this.incidentDate = incidentDate;
+        this.addDate = addDate;
+    }
+    
+    // Getters and setters
+    public Long getClaimId() { return claimId; }
+    public void setClaimId(Long claimId) { this.claimId = claimId; }
+    
+    public Integer getClaimStatusCode() { return claimStatusCode; }
+    public void setClaimStatusCode(Integer claimStatusCode) { this.claimStatusCode = claimStatusCode; }
+    
+    public String getClaimNumber() { return claimNumber; }
+    public void setClaimNumber(String claimNumber) { this.claimNumber = claimNumber; }
+    
+    public String getExaminerCode() { return examinerCode; }
+    public void setExaminerCode(String examinerCode) { this.examinerCode = examinerCode; }
+    
+    public String getAdjustingOfficeCode() { return adjustingOfficeCode; }
+    public void setAdjustingOfficeCode(String adjustingOfficeCode) { this.adjustingOfficeCode = adjustingOfficeCode; }
+    
+    public String getStateCode() { return stateCode; }
+    public void setStateCode(String stateCode) { this.stateCode = stateCode; }
+    
+    public LocalDateTime getIncidentDate() { return incidentDate; }
+    public void setIncidentDate(LocalDateTime incidentDate) { this.incidentDate = incidentDate; }
+    
+    public LocalDateTime getAddDate() { return addDate; }
+    public void setAddDate(LocalDateTime addDate) { this.addDate = addDate; }
+}

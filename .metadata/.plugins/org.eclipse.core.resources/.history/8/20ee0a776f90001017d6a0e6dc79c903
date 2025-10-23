@@ -1,0 +1,82 @@
+package com.claim_search.controller;
+
+import com.claim_search.model.Claim;
+import com.claim_search.model.Claimant;
+import com.claim_search.model.CoverageType;
+import com.claim_search.model.Examiner;
+import com.claim_search.repository.ClaimRepository;
+import com.claim_search.repository.ClaimantRepository;
+import com.claim_search.repository.CoverageTypeRepository;
+import com.claim_search.repository.ExaminerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api")
+public class ClaimController {
+    
+    @Autowired
+    private ClaimRepository claimRepository;
+    
+    @Autowired
+    private ClaimantRepository claimantRepository;
+    
+    @Autowired
+    private CoverageTypeRepository coverageTypeRepository;
+    
+    @Autowired
+    private ExaminerRepository examinerRepository;
+    
+    @GetMapping({"/test", "/test/"})
+    public String test() {
+        return "Spring Boot is working! Database connected!";
+    }
+    
+    @GetMapping({"/health", "/health/"})
+    public String healthCheck() {
+        return "Application is healthy and connected to PostgreSQL!";
+    }
+    
+    @GetMapping({"/", ""})
+    public String home() {
+        return "Welcome to Claims Project API! Use /api/claims/, /api/claimants/, /api/coverages/, /api/examiners/ to see data";
+    }
+    
+    // Get all claims - handle both with and without trailing slash
+    @GetMapping({"/claims", "/claims/"})
+    public List<Claim> getAllClaims() {
+        return claimRepository.findAll();
+    }
+    
+    // Get all claimants
+    @GetMapping({"/claimants", "/claimants/"})
+    public List<Claimant> getAllClaimants() {
+        return claimantRepository.findAll();
+    }
+    
+    // Get all coverage types
+    @GetMapping({"/coverages", "/coverages/"})
+    public List<CoverageType> getAllCoverageTypes() {
+        return coverageTypeRepository.findAll();
+    }
+    
+    // Get all examiners
+    @GetMapping({"/examiners", "/examiners/"})
+    public List<Examiner> getAllExaminers() {
+        return examinerRepository.findAll();
+    }
+    
+    // Get database stats
+    @GetMapping({"/stats", "/stats/"})
+    public String getDatabaseStats() {
+        long claimCount = claimRepository.count();
+        long claimantCount = claimantRepository.count();
+        long coverageCount = coverageTypeRepository.count();
+        long examinerCount = examinerRepository.count();
+        
+        return String.format("Database Stats: Claims=%d, Claimants=%d, Coverages=%d, Examiners=%d", 
+                           claimCount, claimantCount, coverageCount, examinerCount);
+    }
+}

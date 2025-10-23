@@ -99,7 +99,17 @@ public class ClaimsController {
         }
     }
 
-    // Dropdown APIs
+    @PutMapping("/claims/{claimId}")
+    public ResponseEntity<ClaimDto> updateClaim(@PathVariable Long claimId, @RequestBody ClaimDto claim) {
+        try {
+            ClaimDto updatedClaim = claimsService.updateClaim(claimId, claim);
+            return ResponseEntity.ok(updatedClaim);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // Dropdown APIs - Changed from @GetMapping with path variables to simple @GetMapping
     @GetMapping("/claims/statuses")
     public ResponseEntity<List<Map<String, Object>>> getClaimStatuses() {
         try {
@@ -321,5 +331,20 @@ public class ClaimsController {
             return "\"" + value.replace("\"", "\"\"") + "\"";
         }
         return value;
+    }
+
+    @GetMapping("/test-sorting")
+    public ResponseEntity<Map<String, Object>> testSorting() {
+        try {
+            claimsService.testSorting();
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Sorting test completed - check backend logs");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Error testing sorting: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
 }

@@ -1,0 +1,5 @@
+package com.claim_search.controller;
+
+public class HomeController {
+
+}

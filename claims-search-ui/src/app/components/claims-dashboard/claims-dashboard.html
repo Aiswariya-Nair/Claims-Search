@@ -16,7 +16,7 @@
       </button>
       
       <button mat-raised-button class="nav-btn mail-btn">
-        <mat-icon>mail</mat-icon>
+        <mat-icon>email</mat-icon>
         New Mail
         <span class="mail-badge">44</span>
       </button>
@@ -26,7 +26,7 @@
       </button>
       
       <button mat-raised-button class="nav-btn">
-        <mat-icon>close</mat-icon>
+        <mat-icon>settings_applications</mat-icon>
         Rules Configuration
       </button>
       
@@ -38,9 +38,13 @@
         DMS Admin
       </button>
       
+      <button mat-raised-button class="nav-btn">
+        255001994
+      </button>
+      
       <button mat-raised-button class="nav-btn red-btn">
         <mat-icon>close</mat-icon>
-        255001994
+        Close
       </button>
     </div>
   </div>
@@ -94,7 +98,7 @@
             <div class="form-field">
               <label class="form-label">Status:</label>
               <mat-select class="form-select" formControlName="status">
-                <mat-option value="">Open, Re-Op</mat-option>
+                <mat-option value=""></mat-option>
                 <mat-option *ngFor="let option of statusOptions()" [value]="option.value">
                   {{option.label}}
                 </mat-option>
@@ -139,8 +143,8 @@
               <label class="form-label">Organization1:</label>
               <mat-select class="form-select" formControlName="organization1">
                 <mat-option value="">select</mat-option>
-                <mat-option value="org1">Organization 1</mat-option>
-                <mat-option value="org2">Organization 2</mat-option>
+                <mat-option value="org1">ORG1</mat-option>
+                <mat-option value="org2">ORG2</mat-option>
               </mat-select>
             </div>
             
@@ -148,8 +152,8 @@
               <label class="form-label">Organization2:</label>
               <mat-select class="form-select" formControlName="organization2">
                 <mat-option value="">select</mat-option>
-                <mat-option value="org1">Organization 1</mat-option>
-                <mat-option value="org2">Organization 2</mat-option>
+                <mat-option value="org1">ORG1</mat-option>
+                <mat-option value="org2">ORG2</mat-option>
               </mat-select>
             </div>
             
@@ -161,7 +165,14 @@
             <div class="form-field">
               <label class="form-label">Broker Name:</label>
               <mat-select class="form-select" formControlName="brokerName">
-                <mat-option value="">select</mat-option>
+              <mat-option value="">Select</mat-option>
+                <mat-option value="">ABC Insurance Brokers</mat-option>
+                 <mat-option value="">XYZ Risk Management</mat-option>
+                  <mat-option value="">Workers Compensation</mat-option>
+                  <mat-option value="">General Liability</mat-option>
+                  <mat-option value="">Automobile</mat-option>
+                  
+                  
                 <mat-option *ngFor="let broker of brokerOptions()" [value]="broker">
                   {{broker}}
                 </mat-option>
@@ -202,13 +213,29 @@
           Search
         </button>
         <button mat-stroked-button class="reset-btn" (click)="handleReset()">
-          <mat-icon>refresh</mat-icon>
+          <mat-icon>clear</mat-icon>
           Reset
         </button>
-        <button mat-stroked-button class="download-btn">
-          <mat-icon>file_download</mat-icon>
-          Download
-        </button>
+        <div class="download-dropdown">
+          <button mat-stroked-button class="download-btn" [matMenuTriggerFor]="downloadMenu">
+            <mat-icon>file_download</mat-icon>
+            Download
+          </button>
+          <mat-menu #downloadMenu="matMenu">
+            <button mat-menu-item (click)="handleExport('csv')">
+              <mat-icon>description</mat-icon>
+              <span>CSV</span>
+            </button>
+            <button mat-menu-item (click)="handleExport('xlsx')">
+              <mat-icon>grid_on</mat-icon>
+              <span>Excel</span>
+            </button>
+            <button mat-menu-item (click)="handleExport('json')">
+              <mat-icon>code</mat-icon>
+              <span>JSON</span>
+            </button>
+          </mat-menu>
+        </div>
       </div>
 
       <!-- Enhanced Claims Grid -->

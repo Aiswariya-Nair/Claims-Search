@@ -12,8 +12,8 @@ export class ConnectionTestService {
 
   // Test the connection to the backend with timeout
   testConnection(): Observable<boolean> {
-    // Health endpoint is at root level
-    return this.api.get('/health').pipe(
+    // Health endpoint is at /api/health
+    return this.api.get('/api/health').pipe(
       timeout(5000), // 5 second timeout
       map((response: any) => {
         console.log('Health check response:', response);
@@ -28,8 +28,8 @@ export class ConnectionTestService {
 
   // Get API information
   getApiInfo(): Observable<any> {
-    // Info endpoint is at root level
-    return this.api.get('/info').pipe(
+    // Info endpoint is at /api/info
+    return this.api.get('/api/info').pipe(
       timeout(5000),
       catchError((error) => {
         console.error('API info failed:', error);
@@ -55,18 +55,17 @@ export class ConnectionTestService {
 
   // Comprehensive connection test
   performFullConnectionTest(): Observable<{connected: boolean, details: any}> {
-    // Health endpoint is at root level
-    return this.api.get('/health').pipe(
+    return this.api.get('/api/health').pipe(
       timeout(5000),
-      map((healthResponse: any) => {
+      map((rootResponse: any) => {
         return {
           connected: true,
           details: {
-            health: healthResponse,
+            health: rootResponse,
             timestamp: new Date().toISOString(),
             frontend: 'Angular 17+',
-            backend: 'Spring Boot',
-            database: 'PostgreSQL'
+            backend: 'Node.js Express',
+            database: 'In-Memory'
           }
         };
       }),

@@ -1,0 +1,15 @@
+import { Component, signal } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { ConnectionStatusComponent } from './components/connection-status/connection-status';
+import { ClaimsSearchComponent } from './components/claims-search/claims-search';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, ConnectionStatusComponent, ClaimsSearchComponent],
+  templateUrl: './app.html',
+  styleUrl: './app.scss'
+})
+export class App {
+  protected readonly title = signal('Claims Search Application');
+}

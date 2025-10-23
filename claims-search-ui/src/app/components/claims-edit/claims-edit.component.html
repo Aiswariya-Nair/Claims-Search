@@ -1,0 +1,69 @@
+<div class="claims-edit-container" *ngIf="claim">
+  <div class="edit-header">
+    <h3>Edit Claim: {{ claim.claimNumber }}</h3>
+    <button class="close-btn" (click)="onCancel()" title="Close">×</button>
+  </div>
+  
+  <form [formGroup]="editForm" (ngSubmit)="onSave()" class="edit-form">
+    <div class="form-group">
+      <label for="claimNumber">Claim Number</label>
+      <input id="claimNumber" formControlName="claimNumber" class="form-control" readonly>
+    </div>
+    
+    <div class="form-group">
+      <label for="status">Status</label>
+      <select id="status" formControlName="status" class="form-control" required>
+        <option value="">Select Status</option>
+        <option value="Open">Open</option>
+        <option value="Closed">Closed</option>
+        <option value="Pending">Pending</option>
+        <option value="Reopened">Reopened</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="claimantName">Claimant Name</label>
+      <input id="claimantName" formControlName="claimantName" type="text" class="form-control">
+    </div>
+    
+    <div class="form-group">
+      <label for="incidentDate">Incident Date</label>
+      <input id="incidentDate" formControlName="incidentDate" type="date" class="form-control">
+    </div>
+    
+    <div class="form-group">
+      <label for="brokerName">Broker Name</label>
+      <input id="brokerName" formControlName="brokerName" type="text" class="form-control">
+    </div>
+    
+    <div class="form-group">
+      <label for="insured">Insured</label>
+      <input id="insured" formControlName="insured" type="text" class="form-control">
+    </div>
+    
+    <div class="form-group">
+      <label for="supervisor">Supervisor</label>
+      <input id="supervisor" formControlName="supervisor" type="text" class="form-control">
+    </div>
+    
+    <div class="form-group">
+      <label for="employee">Employee</label>
+      <input id="employee" formControlName="employee" type="text" class="form-control">
+    </div>
+    
+    <div class="form-group">
+      <label for="jurisdictionDesc">Jurisdiction</label>
+      <input id="jurisdictionDesc" formControlName="jurisdictionDesc" type="text" class="form-control">
+    </div>
+    
+    <div class="form-group">
+      <label for="bodyPart">Body Part</label>
+      <input id="bodyPart" formControlName="bodyPart" type="text" class="form-control">
+    </div>
+    
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">Save Changes</button>
+    </div>
+  </form>
+</div>

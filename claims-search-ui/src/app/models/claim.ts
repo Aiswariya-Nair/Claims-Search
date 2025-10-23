@@ -73,6 +73,18 @@ export interface Claim {
   claimantFirstOrEntityName?: string;
   insuredName?: string;
   type?: string;
+  
+  // Additional fields from backend response
+  employee?: string;
+  bodyPart?: string;
+  claimType?: string;
+  closed?: string;
+  
+  // Fields that the actual backend is sending (to ensure proper mapping)
+  claimant?: string;
+  org1?: string;
+  org2?: string;
+  jurisdiction?: string;
 }
 
 export interface ClaimsResponse {

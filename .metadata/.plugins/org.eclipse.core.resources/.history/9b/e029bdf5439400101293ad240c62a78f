@@ -1,0 +1,51 @@
+import { Component, OnInit } from '@angular/core';
+import { ClaimService } from './services/claim.service';
+import { Claim } from './models/claim.model';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent implements OnInit {
+  claims: Claim[] = [];
+  searchFilters: any = {};
+  isLoading = false;
+
+  constructor(private claimService: ClaimService) {}
+
+  ngOnInit() {
+    this.loadClaims();
+  }
+
+  loadClaims() {
+    this.isLoading = true;
+    this.claimService.getClaims(this.searchFilters).subscribe({
+      next: (response) => {
+        this.claims = response.items || [];
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error fetching claims:', error);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  onSearch() {
+    // Map your form fields to the search filters
+    this.searchFilters = {
+      // Add mapping based on your form fields
+      // Example: claimNumber: this.form.claimNumber
+    };
+    
+    this.loadClaims();
+  }
+
+  onReset() {
+    this.searchFilters = {};
+    this.loadClaims();
+  }
+
+  // Add methods for CRUD operations as needed
+}

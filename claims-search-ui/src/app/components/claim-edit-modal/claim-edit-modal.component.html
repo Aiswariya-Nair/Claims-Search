@@ -1,0 +1,261 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <h2 class="modal-title">
+      <mat-icon class="header-icon">edit</mat-icon>
+      Edit Claim
+      <span class="claim-number">#{{ data.claim.claimNumber }}</span>
+    </h2>
+    <button mat-icon-button class="close-button" (click)="onClose()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="editForm" class="modal-content">
+    <div class="form-grid">
+      <!-- Core Information Section -->
+      <div class="section">
+        <h3 class="section-title">
+          <mat-icon class="section-icon">info</mat-icon>
+          Core Information
+        </h3>
+        <div class="section-content">
+          <mat-form-field appearance="outline" class="form-field claim-number-field">
+            <mat-label>Claim Number</mat-label>
+            <input matInput formControlName="claimNumber" readonly>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field status-field">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status">
+              <mat-option value="OPEN">Open</mat-option>
+              <mat-option value="IN_PROGRESS">In Progress</mat-option>
+              <mat-option value="CLOSED">Closed</mat-option>
+              <mat-option value="PENDING">Pending</mat-option>
+              <mat-option value="REOPENED">Reopened</mat-option>
+            </mat-select>
+            <mat-error *ngIf="editForm.get('status')?.hasError('required')">
+              Status is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field claim-type-field">
+            <mat-label>Claim Type</mat-label>
+            <input matInput formControlName="claimType" placeholder="Enter claim type">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Claimant Information Section -->
+      <div class="section">
+        <h3 class="section-title">
+          <mat-icon class="section-icon">person</mat-icon>
+          Claimant Information
+        </h3>
+        <div class="section-content">
+          <mat-form-field appearance="outline" class="form-field claimant-name-field">
+            <mat-label>Claimant Name</mat-label>
+            <input matInput formControlName="claimantName" placeholder="Enter claimant name" required>
+            <mat-error *ngIf="editForm.get('claimantName')?.hasError('required')">
+              Claimant name is required
+            </mat-error>
+            <mat-error *ngIf="editForm.get('claimantName')?.hasError('minlength')">
+              Claimant name must be at least 2 characters
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field ssn-field">
+            <mat-label>SSN</mat-label>
+            <input matInput formControlName="ssn" placeholder="XXX-XX-XXXX">
+            <mat-error *ngIf="editForm.get('ssn')?.hasError('invalidSSN')">
+              Please enter a valid SSN (9 digits)
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field employee-field">
+            <mat-label>Employee</mat-label>
+            <input matInput formControlName="employee" placeholder="Enter employee ID">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field body-part-field">
+            <mat-label>Body Part</mat-label>
+            <input matInput formControlName="bodyPart" placeholder="Enter body part">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Insurance Information Section -->
+      <div class="section">
+        <h3 class="section-title">
+          <mat-icon class="section-icon">policy</mat-icon>
+          Insurance Information
+        </h3>
+        <div class="section-content">
+          <mat-form-field appearance="outline" class="form-field policy-number-field">
+            <mat-label>Policy Number</mat-label>
+            <input matInput formControlName="policyNumber" placeholder="Enter policy number">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field insured-field">
+            <mat-label>Insured</mat-label>
+            <input matInput formControlName="insured" placeholder="Enter insured name">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field broker-name-field">
+            <mat-label>Broker Name</mat-label>
+            <input matInput formControlName="brokerName" placeholder="Enter broker name">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field program-field">
+            <mat-label>Program</mat-label>
+            <input matInput formControlName="program" placeholder="Enter program">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Assignment Information Section -->
+      <div class="section">
+        <h3 class="section-title">
+          <mat-icon class="section-icon">assignment</mat-icon>
+          Assignment Information
+        </h3>
+        <div class="section-content">
+          <mat-form-field appearance="outline" class="form-field examiner-field">
+            <mat-label>Examiner</mat-label>
+            <input matInput formControlName="examiner" placeholder="Enter examiner">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field supervisor-field">
+            <mat-label>Supervisor</mat-label>
+            <input matInput formControlName="supervisor" placeholder="Enter supervisor">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field adjusting-office-field full-width">
+            <mat-label>Adjusting Office</mat-label>
+            <input matInput formControlName="adjustingOffice" placeholder="Enter adjusting office">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Location Information Section -->
+      <div class="section">
+        <h3 class="section-title">
+          <mat-icon class="section-icon">location_on</mat-icon>
+          Location Information
+        </h3>
+        <div class="section-content">
+          <mat-form-field appearance="outline" class="form-field state-field">
+            <mat-label>State</mat-label>
+            <input matInput formControlName="stateCode" placeholder="Enter state code">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field loss-state-field">
+            <mat-label>Loss State</mat-label>
+            <input matInput formControlName="lossState" placeholder="Enter loss state">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field org1-field">
+            <mat-label>Organization 1</mat-label>
+            <input matInput formControlName="org1Code" placeholder="Enter organization 1">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field org2-field">
+            <mat-label>Organization 2</mat-label>
+            <input matInput formControlName="org2Code" placeholder="Enter organization 2">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Date Information Section -->
+      <div class="section">
+        <h3 class="section-title">
+          <mat-icon class="section-icon">calendar_today</mat-icon>
+          Date Information
+        </h3>
+        <div class="section-content">
+          <mat-form-field appearance="outline" class="form-field incident-date-field date-field">
+            <mat-label>Incident Date</mat-label>
+            <input matInput formControlName="incidentDate" [matDatepicker]="incidentDatePicker" placeholder="Select incident date">
+            <mat-datepicker-toggle matSuffix [for]="incidentDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #incidentDatePicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field add-date-field date-field">
+            <mat-label>Add Date</mat-label>
+            <input matInput formControlName="addDate" [matDatepicker]="addDatePicker" placeholder="Select add date">
+            <mat-datepicker-toggle matSuffix [for]="addDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #addDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Status Flags Section -->
+      <div class="section">
+        <h3 class="section-title">
+          <mat-icon class="section-icon">flag</mat-icon>
+          Status Flags
+        </h3>
+        <div class="section-content flags-section">
+          <mat-form-field appearance="outline" class="form-field accepted-field flag-field">
+            <mat-label>Accepted</mat-label>
+            <mat-select formControlName="accepted">
+              <mat-option value="Yes">Yes</mat-option>
+              <mat-option value="No">No</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field denied-field flag-field">
+            <mat-label>Denied</mat-label>
+            <mat-select formControlName="denied">
+              <mat-option value="Yes">Yes</mat-option>
+              <mat-option value="No">No</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field closed-field flag-field">
+            <mat-label>Closed</mat-label>
+            <mat-select formControlName="closed">
+              <mat-option value="Yes">Yes</mat-option>
+              <mat-option value="No">No</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Jurisdiction Information Section -->
+      <div class="section">
+        <h3 class="section-title">
+          <mat-icon class="section-icon">gavel</mat-icon>
+          Jurisdiction Information
+        </h3>
+        <div class="section-content">
+          <mat-form-field appearance="outline" class="form-field jurisdiction-field">
+            <mat-label>Jurisdiction</mat-label>
+            <input matInput formControlName="jurisdiction" placeholder="Enter jurisdiction">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field jurisdiction-claim-number-field">
+            <mat-label>Jurisdiction Claim Number</mat-label>
+            <input matInput formControlName="jurisdictionClaimNumber" placeholder="Enter jurisdiction claim number">
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="modal-footer">
+    <button mat-button (click)="onClose()" class="cancel-button">
+      <mat-icon>close</mat-icon>
+      Cancel
+    </button>
+    <button 
+      mat-raised-button 
+      color="primary" 
+      (click)="onSave()"
+      [disabled]="!editForm.valid"
+      class="save-button"
+    >
+      <mat-icon>save</mat-icon>
+      Save Changes
+    </button>
+  </div>
+</div>

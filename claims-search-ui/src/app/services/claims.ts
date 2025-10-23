@@ -28,40 +28,65 @@ export class ClaimsService {
   searchClaims(filters: FilterParams): Observable<ClaimsResponse> {
     let params = new HttpParams();
     
-    // Add all filter parameters
+    // Log the filters being sent
+    console.log('Sending search request with filters:', filters);
+    
+    // Add all filter parameters with proper mapping
     Object.keys(filters).forEach(key => {
       const value = (filters as any)[key];
       if (value !== undefined && value !== null && value !== '') {
         if (Array.isArray(value) && value.length > 0) {
-          params = params.set(key, value.join(','));
+          // For array values, join them with commas
+          if (key === 'status') {
+            // Special handling for status - join the array elements
+            params = params.set(key, value.join(','));
+          } else {
+            params = params.set(key, value.join(','));
+          }
         } else if (!Array.isArray(value)) {
+          // For single values, convert to string
           params = params.set(key, value.toString());
         }
       }
     });
+    
+    // Log the final parameters
+    console.log('Final HTTP parameters:', params.toString());
 
     return this.api.get<any>('claims', params).pipe(
       map(response => {
-        // Handle the new API response format
+        // Log the actual response from backend
+        console.log('Received response from backend:', response);
+        
+        // Handle different API response formats
         const claims = response.items || response.claims || [];
+        
+        // Log the structure of the first claim to see what fields are available
+        if (claims.length > 0) {
+          console.log('First claim structure:', claims[0]);
+          console.log('First claim keys:', Object.keys(claims[0]));
+        }
         
         return {
           claims: claims,
           items: claims,
-          totalRecords: response.total || response.totalRecords || 0,
-          total: response.total || response.totalRecords || 0,
+          totalRecords: response.totalRecords || response.total || 0,
+          total: response.totalRecords || response.total || 0,
           totalPages: response.totalPages || 0,
-          currentPage: (response.page !== undefined) ? response.page - 1 : (response.currentPage !== undefined ? response.currentPage : 0),
-          page: (response.page !== undefined) ? response.page : (response.currentPage !== undefined ? response.currentPage : 1),
+          currentPage: (response.currentPage !== undefined) ? response.currentPage : (response.page !== undefined ? response.page + 1 : 1),
+          page: (response.page !== undefined) ? response.page + 1 : (response.currentPage !== undefined ? response.currentPage : 1),
           pageSize: response.pageSize || 25
         };
       }),
-	  catchError(error => {
-	            // Log the error for debugging
-	            console.error('Error in map operator:', error);
-	            // Re-throw the error or return a fallback observable
-	            return throwError(() => new Error('Something went wrong during data processing.'));
-	          })
+      catchError(error => {
+        // Log the error for debugging
+        console.error('Error in searchClaims:', error);
+        // Re-throw the error with more specific information
+        if (error.status) {
+          return throwError(() => new Error(`HTTP ${error.status}: ${error.statusText}`));
+        }
+        return throwError(() => new Error('Failed to fetch claims data. Please check your network connection and try again.'));
+      })
     );
   }
 
@@ -106,6 +131,10 @@ export class ClaimsService {
 
   createClaim(claim: Claim): Observable<Claim> {
     return this.api.post<Claim>('claims', claim);
+  }
+
+  updateClaim(claimId: string, claim: Claim): Observable<Claim> {
+    return this.api.put<Claim>(`claims/${claimId}`, claim);
   }
 
   // Dropdown APIs
@@ -163,22 +192,37 @@ export class ClaimsService {
     return this.api.get<string[]>('claims/typeahead/underwriter', params);
   }
 
+  // Test sorting method
+  testSorting(): Observable<any> {
+    return this.api.get<any>('claims/test-sorting');
+  }
+
   // Legacy support and testing methods
   testApi(): Observable<ClaimsResponse> {
     return this.api.get<any>('claims').pipe(
       map(response => {
+        // Handle different API response formats
         const claims = response.items || response.claims || [];
         
         return {
           claims: claims,
           items: claims,
-          totalRecords: response.total || response.totalRecords || 0,
-          total: response.total || response.totalRecords || 0,
+          totalRecords: response.totalRecords || response.total || 0,
+          total: response.totalRecords || response.total || 0,
           totalPages: response.totalPages || 0,
-          currentPage: (response.page !== undefined) ? response.page - 1 : (response.currentPage !== undefined ? response.currentPage : 0),
-          page: (response.page !== undefined) ? response.page : (response.currentPage !== undefined ? response.currentPage : 1),
+          currentPage: (response.currentPage !== undefined) ? response.currentPage : (response.page !== undefined ? response.page + 1 : 1),
+          page: (response.page !== undefined) ? response.page + 1 : (response.currentPage !== undefined ? response.currentPage : 1),
           pageSize: response.pageSize || 25
         };
+      }),
+      catchError(error => {
+        // Log the error for debugging
+        console.error('Error in testApi:', error);
+        // Re-throw the error with more specific information
+        if (error.status) {
+          return throwError(() => new Error(`HTTP ${error.status}: ${error.statusText}`));
+        }
+        return throwError(() => new Error('Failed to test API connection. Please check your network connection and try again.'));
       })
     );
   }

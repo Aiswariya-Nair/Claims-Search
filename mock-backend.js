@@ -36,7 +36,11 @@ app.get('/api/claims', (req, res) => {
         claimantName: 'Alice Smith',
         ssn: '123-45-6789',
         programDesc: 'Auto Insurance',
-        organizationCode: 'ORG001'
+        organizationCode: 'ORG001',
+        org1Code: 'ORG1',
+        org2Code: 'ORG2',
+        jurisdictionCode: 1,
+        jurisdictionDesc: 'Federal'
       },
       {
         claimId: 2,
@@ -49,7 +53,11 @@ app.get('/api/claims', (req, res) => {
         claimantName: 'Bob Johnson',
         ssn: '987-65-4321',
         programDesc: 'Home Insurance',
-        organizationCode: 'ORG002'
+        organizationCode: 'ORG002',
+        org1Code: 'ORG1',
+        org2Code: 'ORG2',
+        jurisdictionCode: 2,
+        jurisdictionDesc: 'State'
       }
     ],
     page: 1,

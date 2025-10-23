@@ -1,0 +1,21 @@
+package com.aiswariya.Claimsproject;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+@SpringBootApplication(scanBasePackages = {
+    "com.aiswariya.Claimsproject",
+    "com.claim_search.controller",
+    "com.claim_search.repository",
+    "com.claim_search.model"
+})
+@EntityScan(basePackages = "com.claim_search.model")
+@EnableJpaRepositories(basePackages = "com.claim_search.repository")
+public class ClaimsprojectApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ClaimsprojectApplication.class, args);
+    }
+}

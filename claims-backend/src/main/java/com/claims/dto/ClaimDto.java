@@ -74,40 +74,46 @@ public class ClaimDto {
     private String entityName;
     private String claimantOrEntityName;
     private String claimantFirstOrEntityName;
+    
+    // Additional fields that are being sent by the backend but were missing
+    private String claimant;
+    private String jurisdiction;
+    private String org1;
+    private String org2;
 
     public ClaimDto() {}
 
     public ClaimDto(Claim claim) {
         this.claimId = claim.getClaimId();
         this.claimStatusCode = claim.getClaimStatusCode();
-        this.claimNumber = claim.getClaimNumber();
-        this.examinerCode = claim.getExaminerCode();
-        this.adjustingOfficeCode = claim.getAdjustingOfficeCode();
-        this.stateCode = claim.getStateCode();
-        this.incidentDate = claim.getIncidentDate() != null ? claim.getIncidentDate().toString() : null;
-        this.addDate = claim.getAddDate() != null ? claim.getAddDate().toString() : null;
-        this.policyNumber = claim.getPolicyNumber();
-        this.claimantName = claim.getClaimantName();
-        this.ssn = claim.getSsn();
-        this.programCode = claim.getProgramCode();
+        this.claimNumber = claim.getClaimNumber() != null ? claim.getClaimNumber() : "";
+        this.examinerCode = claim.getExaminerCode() != null ? claim.getExaminerCode() : "";
+        this.adjustingOfficeCode = claim.getAdjustingOfficeCode() != null ? claim.getAdjustingOfficeCode() : "";
+        this.stateCode = claim.getStateCode() != null ? claim.getStateCode() : "";
+        this.incidentDate = claim.getIncidentDate() != null ? claim.getIncidentDate().toString() : "";
+        this.addDate = claim.getAddDate() != null ? claim.getAddDate().toString() : "";
+        this.policyNumber = claim.getPolicyNumber() != null ? claim.getPolicyNumber() : "";
+        this.claimantName = claim.getClaimantName() != null ? claim.getClaimantName() : "";
+        this.ssn = claim.getSsn() != null ? claim.getSsn() : "";
+        this.programCode = claim.getProgramCode() != null ? claim.getProgramCode() : "";
         this.insuranceTypeId = claim.getInsuranceTypeId();
-        this.organizationCode = claim.getOrganizationCode();
-        this.org1Code = claim.getOrg1Code();
-        this.org2Code = claim.getOrg2Code();
-        this.org3Code = claim.getOrg3Code();
-        this.org4Code = claim.getOrg4Code();
-        this.lossState = claim.getLossState();
-        this.lossStateCode = claim.getLossStateCode();
-        this.underwriterCode = claim.getUnderwriterCode();
+        this.organizationCode = claim.getOrganizationCode() != null ? claim.getOrganizationCode() : "";
+        this.org1Code = claim.getOrg1Code() != null ? claim.getOrg1Code() : "";
+        this.org2Code = claim.getOrg2Code() != null ? claim.getOrg2Code() : "";
+        this.org3Code = claim.getOrg3Code() != null ? claim.getOrg3Code() : "";
+        this.org4Code = claim.getOrg4Code() != null ? claim.getOrg4Code() : "";
+        this.lossState = claim.getLossState() != null ? claim.getLossState() : "";
+        this.lossStateCode = claim.getLossStateCode() != null ? claim.getLossStateCode() : "";
+        this.underwriterCode = claim.getUnderwriterCode() != null ? claim.getUnderwriterCode() : "";
         this.jurisdictionCode = claim.getJurisdictionCode();
-        this.incidentReportedDate = claim.getIncidentReportedDate() != null ? claim.getIncidentReportedDate().toString() : null;
-        this.claimClosedDate = claim.getClaimClosedDate() != null ? claim.getClaimClosedDate().toString() : null;
+        this.incidentReportedDate = claim.getIncidentReportedDate() != null ? claim.getIncidentReportedDate().toString() : "";
+        this.claimClosedDate = claim.getClaimClosedDate() != null ? claim.getClaimClosedDate().toString() : "";
         this.estimatedIncidentAmount = claim.getEstimatedIncidentAmount();
         this.totalPayoutOnIncident = claim.getTotalPayoutOnIncident();
-        this.active = claim.getActive();
-        this.masterClaim = claim.getMasterClaim();
-        this.affiliateClaimNumber = claim.getAffiliateClaimNumber();
-        this.jurisdictionClaimNumber = claim.getJurisdictionClaimNumber();
+        this.active = claim.getActive() != null ? claim.getActive() : "1";
+        this.masterClaim = claim.getMasterClaim() != null ? claim.getMasterClaim() : "";
+        this.affiliateClaimNumber = claim.getAffiliateClaimNumber() != null ? claim.getAffiliateClaimNumber() : "";
+        this.jurisdictionClaimNumber = claim.getJurisdictionClaimNumber() != null ? claim.getJurisdictionClaimNumber() : "";
         
         // Set some default values for demo
         this.billReviewVendorId = 24L;
@@ -316,4 +322,17 @@ public class ClaimDto {
 
     public String getClaimantFirstOrEntityName() { return claimantFirstOrEntityName; }
     public void setClaimantFirstOrEntityName(String claimantFirstOrEntityName) { this.claimantFirstOrEntityName = claimantFirstOrEntityName; }
+    
+    // Getters and setters for the additional fields
+    public String getClaimant() { return claimant; }
+    public void setClaimant(String claimant) { this.claimant = claimant; }
+
+    public String getJurisdiction() { return jurisdiction; }
+    public void setJurisdiction(String jurisdiction) { this.jurisdiction = jurisdiction; }
+
+    public String getOrg1() { return org1; }
+    public void setOrg1(String org1) { this.org1 = org1; }
+
+    public String getOrg2() { return org2; }
+    public void setOrg2(String org2) { this.org2 = org2; }
 }

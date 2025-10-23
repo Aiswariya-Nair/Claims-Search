@@ -1,0 +1,448 @@
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 90vh;
+  width: 100%;
+  max-width: 1200px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  border-bottom: 1px solid #e9ecef;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  
+  .modal-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #495057;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    
+    .header-icon {
+      color: #007bff;
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+    }
+    
+    .claim-number {
+      font-size: 18px;
+      color: #6c757d;
+      font-weight: 500;
+    }
+  }
+  
+  .close-button {
+    color: #6c757d;
+    width: 40px;
+    height: 40px;
+    
+    &:hover {
+      background-color: #e9ecef;
+      border-radius: 50%;
+    }
+  }
+}
+
+.modal-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  background: linear-gradient(135deg, #fafafa 0%, #f1f3f5 100%);
+  
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+    
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    
+    @media (max-width: 480px) {
+      gap: 12px;
+    }
+  }
+  
+  .section {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+      transform: translateY(-2px);
+    }
+    
+    .section-title {
+      margin: 0;
+      padding: 18px 24px;
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #e9ecef;
+      font-size: 18px;
+      font-weight: 600;
+      color: #495057;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      
+      .section-icon {
+        color: #007bff;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+    
+    .section-content {
+      padding: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 16px;
+      }
+      
+      @media (max-width: 480px) {
+        gap: 12px;
+        padding: 12px;
+      }
+      
+      // Special styling for flags section
+      &.flags-section {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        
+        @media (max-width: 768px) {
+          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        }
+      }
+    }
+    
+    .form-field {
+      width: 100%;
+      margin-bottom: 0;
+      min-width: 0;
+      
+      // Ensure consistent height for form fields
+      .mat-form-field-wrapper {
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+      
+      // Special styling for full-width fields
+      &.full-width {
+        grid-column: 1 / -1;
+      }
+      
+      // Specific field styling for better visual hierarchy
+      &.claim-number-field {
+        background-color: #f8f9fa;
+        
+        .mat-form-field-outline {
+          background-color: #f1f3f5;
+        }
+      }
+      
+      &.status-field {
+        .mat-select-arrow {
+          color: #28a745;
+        }
+      }
+      
+      &.ssn-field {
+        .mat-form-field-outline {
+          background-color: #fff8e1;
+        }
+      }
+      
+      &.flag-field {
+        .mat-form-field-outline {
+          background-color: #e3f2fd;
+        }
+      }
+    }
+  }
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 24px;
+  border-top: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+  
+  // Ensure buttons are aligned properly
+  align-items: center;
+  
+  .cancel-button {
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 0 16px;
+    
+    &:hover {
+      background-color: #e9ecef;
+    }
+  }
+  
+  .save-button {
+    background-color: #007bff;
+    color: white;
+    border-radius: 6px;
+    padding: 0 24px;
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+    
+    &:hover {
+      background-color: #0056b3;
+      box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+    }
+    
+    &:disabled {
+      background-color: #ccc;
+      color: #666;
+      box-shadow: none;
+    }
+    
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .modal-header {
+    padding: 16px;
+    
+    .modal-title {
+      font-size: 20px;
+    }
+  }
+  
+  .modal-content {
+    padding: 16px;
+    
+    .form-grid {
+      gap: 16px;
+    }
+    
+    .section {
+      .section-title {
+        padding: 14px 16px;
+        font-size: 16px;
+      }
+      
+      .section-content {
+        padding: 16px;
+        gap: 16px;
+      }
+    }
+  }
+  
+  .modal-footer {
+    padding: 16px;
+    flex-direction: column;
+    
+    .cancel-button,
+    .save-button {
+      width: 100%;
+      height: 44px;
+    }
+  }
+}
+
+// Extra small devices
+@media (max-width: 480px) {
+  .modal-header {
+    padding: 12px;
+    
+    .modal-title {
+      font-size: 18px;
+      
+      .claim-number {
+        font-size: 14px;
+      }
+    }
+  }
+  
+  .modal-content {
+    padding: 12px;
+    
+    .section {
+      .section-title {
+        padding: 12px 14px;
+        font-size: 15px;
+      }
+      
+      .section-content {
+        padding: 12px;
+        gap: 12px;
+      }
+    }
+  }
+  
+  .modal-footer {
+    padding: 12px;
+    gap: 12px;
+  }
+}
+
+// Additional improvements for better alignment and organization
+.form-grid {
+  // Ensure consistent column widths
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  
+  // Add more spacing between sections on larger screens
+  @media (min-width: 1200px) {
+    gap: 32px;
+  }
+  
+  // Ensure proper alignment on medium screens
+  @media (min-width: 769px) and (max-width: 1199px) {
+    gap: 24px;
+  }
+  
+  // Ensure sections maintain consistent height
+  .section {
+    display: flex;
+    flex-direction: column;
+    
+    .section-content {
+      flex: 1;
+    }
+  }
+}
+
+.section {
+  // Ensure sections have consistent styling
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+  }
+  
+  .section-content {
+    // Ensure form fields are properly aligned
+    .form-field {
+      margin-bottom: 0;
+      
+      // Style date pickers specifically
+      &.date-field {
+        .mat-form-field-suffix {
+          button {
+            width: 40px;
+            height: 40px;
+          }
+        }
+      }
+      
+      // Ensure consistent padding for all form fields
+      .mat-form-field-wrapper {
+        padding-bottom: 0;
+      }
+    }
+  }
+  
+  // Ensure proper spacing for section titles
+  .section-title {
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 24px;
+      right: 24px;
+      height: 1px;
+      background-color: #e9ecef;
+    }
+  }
+}
+
+// Improve form field styling for better visual hierarchy
+.mat-form-field {
+  &.mat-form-field-appearance-outline {
+    .mat-form-field-outline {
+      background-color: #fdfdfd;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+    
+    &.mat-focused {
+      .mat-form-field-outline {
+        background-color: #ffffff;
+        box-shadow: 0 0 0 2px #007bff;
+      }
+    }
+    
+    .mat-form-field-label {
+      color: #6c757d;
+      font-weight: 500;
+    }
+    
+    .mat-form-field-infix {
+      padding: 0.7em 0;
+    }
+    
+    .mat-form-field-subscript-wrapper {
+      margin-top: 2px;
+    }
+  }
+}
+
+// Improve select dropdown styling
+.mat-select {
+  .mat-select-arrow {
+    color: #007bff;
+  }
+}
+
+.mat-option {
+  &:hover {
+    background-color: #e3f2fd;
+  }
+  
+  &.mat-selected {
+    background-color: rgba(0, 123, 255, 0.1);
+  }
+}
+
+// Improve datepicker styling
+.mat-datepicker-content {
+  .mat-calendar {
+    .mat-calendar-header {
+      background-color: #007bff;
+      color: white;
+    }
+    
+    .mat-calendar-body-selected {
+      background-color: #007bff;
+    }
+  }
+}
+
+// Focus states for better accessibility
+.form-field {
+  &:focus-within {
+    .mat-form-field-outline {
+      box-shadow: 0 0 0 2px #007bff;
+    }
+  }
+}

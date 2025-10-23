@@ -1,4 +1,3 @@
-
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
@@ -15,10 +14,13 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { ClaimsService } from '../../services/claims';
 import { ConnectionTestService } from '../../services/connection-test';
 import { ClaimsGridComponent } from '../claims-grid/claims-grid.component';
+import { ClaimDetailsModalComponent } from '../claim-details-modal/claim-details-modal.component';
+import { ClaimsEditComponent } from '../claims-edit/claims-edit.component';
 import { 
   Claim, 
   ClaimsResponse,
@@ -56,6 +58,7 @@ interface SortConfig {
     MatDialogModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
+    MatMenuModule,
     ClaimsGridComponent
   ],
   templateUrl: './claims-dashboard.html',
@@ -80,6 +83,8 @@ export class ClaimsDashboardComponent implements OnInit {
   showFilterDialog = signal<boolean>(false);
   selectedRows = signal<string[]>([]);
   sortConfig = signal<SortConfig | null>(null);
+  editingClaim = signal<Claim | null>(null);
+  viewingClaim = signal<Claim | null>(null);
   
   // Dropdown data
   statusOptions = signal<StatusOption[]>([]);
@@ -90,10 +95,22 @@ export class ClaimsDashboardComponent implements OnInit {
   organizationOptions = signal<OrganizationOption[]>([]);
   brokerOptions = signal<string[]>([]);
 
-  // Table columns definition
+  // Table columns definition - UPDATED ARRAY
   displayedColumns: string[] = [
-    'select', 'claimNumber', 'claimantName', 'incidentDate', 
-    'status', 'examiner', 'stateCode', 'ssn', 'policyNumber'
+    'select', 
+    'claimNumber', 
+    'claimantName', 
+    'incidentDate', 
+    'status', 
+    'examiner', 
+    'stateCode', 
+    'ssn', 
+    'policyNumber',
+    // ADD THESE MISSING FIELDS:
+    'claimType',    // For "Type" column
+    'closed',       // For "Closed" column  
+    'employee',     // For "Employees" column
+    'bodyPart'      // For "Body Part" column
   ];
 
   constructor(
@@ -169,7 +186,85 @@ export class ClaimsDashboardComponent implements OnInit {
         this.claimsService.getOrganizations().toPromise()
       ]);
 
-      // Mock dropdown data until backend is connected
+      // Set the actual data from backend
+      if (statuses && statuses.length > 0) {
+        this.statusOptions.set(statuses);
+      } else {
+        // Fallback to mock data if backend returns empty
+        this.statusOptions.set([
+          { value: 1, label: 'Open', statusCode: 1, statusDesc: 'Open' },
+          { value: 2, label: 'Closed', statusCode: 2, statusDesc: 'Closed' },
+          { value: 3, label: 'Pending', statusCode: 3, statusDesc: 'Pending' },
+          { value: 4, label: 'Reopened', statusCode: 4, statusDesc: 'Reopened' }
+        ]);
+      }
+
+      if (states && states.length > 0) {
+        this.stateOptions.set(states);
+      } else {
+        // Fallback to mock data if backend returns empty
+        this.stateOptions.set([
+          { value: 'CA', label: 'California', stateCode: 'CA', stateDesc: 'California' },
+          { value: 'NY', label: 'New York', stateCode: 'NY', stateDesc: 'New York' },
+          { value: 'TX', label: 'Texas', stateCode: 'TX', stateDesc: 'Texas' },
+          { value: 'FL', label: 'Florida', stateCode: 'FL', stateDesc: 'Florida' },
+          { value: 'IL', label: 'Illinois', stateCode: 'IL', stateDesc: 'Illinois' }
+        ]);
+      }
+
+      if (programs && programs.length > 0) {
+        this.programOptions.set(programs);
+      } else {
+        // Fallback to mock data if backend returns empty
+        this.programOptions.set([
+          { value: 'AUTO', label: 'Auto Insurance', programCode: 'AUTO', programDesc: 'Auto Insurance' },
+          { value: 'HOME', label: 'Home Insurance', programCode: 'HOME', programDesc: 'Home Insurance' },
+          { value: 'LIFE', label: 'Life Insurance', programCode: 'LIFE', programDesc: 'Life Insurance' },
+          { value: 'HEALTH', label: 'Health Insurance', programCode: 'HEALTH', programDesc: 'Health Insurance' }
+        ]);
+      }
+
+      if (insuranceTypes && insuranceTypes.length > 0) {
+        this.insuranceTypeOptions.set(insuranceTypes);
+      } else {
+        // Fallback to mock data if backend returns empty
+        this.insuranceTypeOptions.set([
+          { value: 1, label: 'Liability', insuranceType: 1, insuranceTypeDesc: 'Liability' },
+          { value: 2, label: 'Comprehensive', insuranceType: 2, insuranceTypeDesc: 'Comprehensive' },
+          { value: 3, label: 'Collision', insuranceType: 3, insuranceTypeDesc: 'Collision' },
+          { value: 4, label: 'Auto', insuranceType: 4, insuranceTypeDesc: 'Auto' }
+        ]);
+      }
+
+      if (examiners && examiners.length > 0) {
+        this.examinerOptions.set(examiners);
+      } else {
+        // Fallback to mock data if backend returns empty
+        this.examinerOptions.set([
+          { value: 'EX001', label: 'John Smith', examinerCode: 'EX001', examinerName: 'John Smith' },
+          { value: 'EX002', label: 'Jane Doe', examinerCode: 'EX002', examinerName: 'Jane Doe' },
+          { value: 'EX003', label: 'Bob Johnson', examinerCode: 'EX003', examinerName: 'Bob Johnson' }
+        ]);
+      }
+
+      if (organizations && organizations.length > 0) {
+        this.organizationOptions.set(organizations);
+      } else {
+        // Fallback to mock data if backend returns empty
+        this.organizationOptions.set([
+          { value: 'ORG001', label: 'Organization 1', orgCode: 'ORG001', orgDesc: 'Organization 1' },
+          { value: 'ORG002', label: 'Organization 2', orgCode: 'ORG002', orgDesc: 'Organization 2' },
+          { value: 'ORG003', label: 'Organization 3', orgCode: 'ORG003', orgDesc: 'Organization 3' }
+        ]);
+      }
+      
+      // Mock broker options for now
+      this.brokerOptions.set(['Broker A', 'Broker B', 'Broker C']);
+    } catch (error) {
+      console.error('Error loading dropdown data:', error);
+      this.showError('Failed to load dropdown data');
+      
+      // Fallback to mock data on error
       this.statusOptions.set([
         { value: 1, label: 'Open', statusCode: 1, statusDesc: 'Open' },
         { value: 2, label: 'Closed', statusCode: 2, statusDesc: 'Closed' },
@@ -179,30 +274,32 @@ export class ClaimsDashboardComponent implements OnInit {
       this.stateOptions.set([
         { value: 'CA', label: 'California', stateCode: 'CA', stateDesc: 'California' },
         { value: 'NY', label: 'New York', stateCode: 'NY', stateDesc: 'New York' },
-        { value: 'TX', label: 'Texas', stateCode: 'TX', stateDesc: 'Texas' }
+        { value: 'TX', label: 'Texas', stateCode: 'TX', stateDesc: 'Texas' },
+        { value: 'FL', label: 'Florida', stateCode: 'FL', stateDesc: 'Florida' },
+        { value: 'IL', label: 'Illinois', stateCode: 'IL', stateDesc: 'Illinois' }
       ]);
       this.programOptions.set([
         { value: 'AUTO', label: 'Auto Insurance', programCode: 'AUTO', programDesc: 'Auto Insurance' },
-        { value: 'HOME', label: 'Home Insurance', programCode: 'HOME', programDesc: 'Home Insurance' }
+        { value: 'HOME', label: 'Home Insurance', programCode: 'HOME', programDesc: 'Home Insurance' },
+        { value: 'LIFE', label: 'Life Insurance', programCode: 'LIFE', programDesc: 'Life Insurance' },
+        { value: 'HEALTH', label: 'Health Insurance', programCode: 'HEALTH', programDesc: 'Health Insurance' }
       ]);
       this.insuranceTypeOptions.set([
         { value: 1, label: 'Liability', insuranceType: 1, insuranceTypeDesc: 'Liability' },
-        { value: 2, label: 'Comprehensive', insuranceType: 2, insuranceTypeDesc: 'Comprehensive' }
+        { value: 2, label: 'Comprehensive', insuranceType: 2, insuranceTypeDesc: 'Comprehensive' },
+        { value: 3, label: 'Collision', insuranceType: 3, insuranceTypeDesc: 'Collision' },
+        { value: 4, label: 'Auto', insuranceType: 4, insuranceTypeDesc: 'Auto' }
       ]);
       this.examinerOptions.set([
         { value: 'EX001', label: 'John Smith', examinerCode: 'EX001', examinerName: 'John Smith' },
-        { value: 'EX002', label: 'Jane Doe', examinerCode: 'EX002', examinerName: 'Jane Doe' }
+        { value: 'EX002', label: 'Jane Doe', examinerCode: 'EX002', examinerName: 'Jane Doe' },
+        { value: 'EX003', label: 'Bob Johnson', examinerCode: 'EX003', examinerName: 'Bob Johnson' }
       ]);
       this.organizationOptions.set([
         { value: 'ORG001', label: 'Organization 1', orgCode: 'ORG001', orgDesc: 'Organization 1' },
-        { value: 'ORG002', label: 'Organization 2', orgCode: 'ORG002', orgDesc: 'Organization 2' }
+        { value: 'ORG002', label: 'Organization 2', orgCode: 'ORG002', orgDesc: 'Organization 2' },
+        { value: 'ORG003', label: 'Organization 3', orgCode: 'ORG003', orgDesc: 'Organization 3' }
       ]);
-      
-      // Mock broker options for now
-      this.brokerOptions.set(['Broker A', 'Broker B', 'Broker C']);
-    } catch (error) {
-      console.error('Error loading dropdown data:', error);
-      this.showError('Failed to load dropdown data');
     }
   }
 
@@ -503,12 +600,75 @@ export class ClaimsDashboardComponent implements OnInit {
   // Add these methods for ClaimsGrid events
   onClaimView(claim: Claim): void {
     console.log('View claim:', claim);
-    // Handle claim viewing logic
+    // Open the view modal
+    this.dialog.open(ClaimDetailsModalComponent, {
+      width: '80%',
+      maxWidth: '1200px',
+      maxHeight: '90vh',
+      data: { claim, mode: 'view' }
+    });
   }
 
   onClaimEdit(claim: Claim): void {
     console.log('Edit claim:', claim);
-    // Handle claim editing logic
+    // Open the edit modal
+    const dialogRef = this.dialog.open(ClaimsEditComponent, {
+      width: '500px',
+      height: '600px',
+      data: { claim }
+    });
+
+    // Listen to the save event from the component
+    const instance = dialogRef.componentInstance;
+    instance.save.subscribe((updatedClaim: Claim) => {
+      this.onClaimSave(updatedClaim);
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Handle the updated claim if not already handled by save event
+        console.log('Edit dialog closed with result:', result);
+      }
+    });
+  }
+
+  onClaimSave(updatedClaim: Claim): void {
+    console.log('Save claim:', updatedClaim);
+    
+    // Get the claim ID
+    const claimId = updatedClaim.claimId?.toString() || updatedClaim.id?.toString();
+    if (!claimId) {
+      this.showError('Cannot update claim: Missing claim ID');
+      return;
+    }
+    
+    // Call the service to update the claim
+    this.claimsService.updateClaim(claimId, updatedClaim).subscribe({
+      next: (claim: Claim) => {
+        // Update the claim in the data array
+        const currentData = [...this.searchData()];
+        const index = currentData.findIndex(c => 
+          (c.claimId === claim.claimId) || (c.id === claim.id));
+        if (index !== -1) {
+          currentData[index] = claim;
+          this.searchData.set(currentData);
+          this.showSuccess('Claim updated successfully');
+        }
+        
+        // Close the edit form
+        this.editingClaim.set(null);
+      },
+      error: (error: any) => {
+        console.error('Error updating claim:', error);
+        this.showError('Failed to update claim: ' + error.message);
+      }
+    });
+  }
+
+  onClaimCancel(): void {
+    console.log('Cancel editing');
+    // Close the edit form
+    this.editingClaim.set(null);
   }
 
   onClaimsSelected(selectedIds: string[]): void {

@@ -21,7 +21,11 @@
       "programDesc": "AUTO",
       "examiner": "John Smith",
       "insuranceTypeId": 1,
-      "organizationCode": "ORG001"
+      "organizationCode": "ORG001",
+      "org1Code": "ORG1",
+      "org2Code": "ORG2",
+      "jurisdictionCode": 1,
+      "jurisdictionDesc": "Federal"
     },
     {
       "claimId": 136895138,
@@ -40,7 +44,11 @@
       "programDesc": "HOME",
       "examiner": "Jane Doe",
       "insuranceTypeId": 2,
-      "organizationCode": "ORG002"
+      "organizationCode": "ORG002",
+      "org1Code": "ORG1",
+      "org2Code": "ORG2",
+      "jurisdictionCode": 2,
+      "jurisdictionDesc": "State"
     }
   ]
 }

@@ -4,10 +4,10 @@ Write-Host "===============================================" -ForegroundColor Cy
 Write-Host "  Claims Management System - Frontend UI" -ForegroundColor Cyan
 Write-Host "===============================================" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "Frontend: Angular 17+ (http://localhost:4200)" -ForegroundColor Yellow
-Write-Host "Backend Proxy: http://localhost:8080/api" -ForegroundColor Yellow
+Write-Host "Frontend: Angular 17+ (http://localhost:4202)" -ForegroundColor Yellow
+Write-Host "Backend Proxy: http://localhost:8081/api" -ForegroundColor Yellow
 Write-Host ""
-Write-Host "Make sure the backend server is running on port 8080!" -ForegroundColor Red
+Write-Host "Make sure the backend server is running on port 8081!" -ForegroundColor Red
 Write-Host ""
 
 # Check if we're in the correct directory
@@ -34,8 +34,8 @@ if (!(Test-Path "node_modules")) {
 Write-Host ""
 Write-Host "Starting Angular development server with proxy..." -ForegroundColor Green
 Write-Host ""
-Write-Host "Navigate to: http://localhost:4200" -ForegroundColor Cyan
+Write-Host "Navigate to: http://localhost:4202" -ForegroundColor Cyan
 Write-Host ""
 
 # Start the Angular development server
-ng serve --proxy-config proxy.conf.json --host 0.0.0.0 --port 4200
+ng serve --proxy-config proxy.conf.json --host 0.0.0.0 --port 4202

@@ -1,0 +1,25 @@
+package com.claim_search.controller;
+import com.claim_search.model.Claim;
+import com.claim_search.repository.ClaimRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api")
+public class ClaimController {
+    
+    @GetMapping("/claims")
+    public ResponseEntity<String> getClaims() {
+        return ResponseEntity.ok("Claims endpoint is working!");
+    }
+    
+    @GetMapping("/")
+    public String home() {
+        return "Welcome to Claims Application";
+    }
+}

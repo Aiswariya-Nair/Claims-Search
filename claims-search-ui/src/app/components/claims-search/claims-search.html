@@ -21,7 +21,7 @@
         (click)="testBackendConnection()"
         title="Test backend connection"
       >
-        <span class="btn-icon">🔌</span>
+        <span class="btn-icon"><i class="material-icons">sync</i></span>
         Test Connection
       </button>
       <button 
@@ -31,7 +31,7 @@
         title="Add a test claim to the database"
         *ngIf="backendConnected"
       >
-        <span class="btn-icon">➕</span>
+        <span class="btn-icon"><i class="material-icons">add</i></span>
         Add Test Claim
       </button>
     </div>
@@ -46,7 +46,7 @@
       </h2>
     </div>
 
-    <form [formGroup]="searchForm" (ngSubmit)="searchClaims()" class="search-form">
+    <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="search-form">
       <!-- Quick Search -->
       <div class="search-section">
         <div class="section-header">
@@ -55,7 +55,7 @@
         </div>
         <div class="form-group full-width">
           <div class="input-wrapper">
-            <span class="input-icon">🔍</span>
+            <span class="input-icon"><i class="material-icons">search</i></span>
             <input 
               type="text" 
               id="q"
@@ -64,8 +64,8 @@
               class="form-control search-input"
             />
             <button type="submit" class="search-btn" [disabled]="loading" title="Search claims">
-              <span *ngIf="loading" class="loading-spinner">🔄</span>
-              <span *ngIf="!loading">🔍</span>
+              <span *ngIf="loading" class="loading-spinner"><i class="material-icons">autorenew</i></span>
+              <span *ngIf="!loading"><i class="material-icons">search</i></span>
             </button>
           </div>
         </div>
@@ -84,13 +84,24 @@
               <i class="label-icon">📄</i>
               Claim Number
             </label>
-            <input 
-              type="text" 
-              id="claimNumber"
-              formControlName="claimNumber" 
-              placeholder="Enter claim number"
-              class="form-control"
-            />
+            <div class="input-group">
+              <input 
+                type="text" 
+                id="claimNumber"
+                formControlName="claimNumber" 
+                placeholder="Enter claim number"
+                class="form-control"
+                (keyup.enter)="searchByField('claimNumber')"
+              />
+              <button 
+                type="button" 
+                class="btn btn-secondary search-field-btn"
+                (click)="searchByField('claimNumber')"
+                title="Search by claim number"
+              >
+                <i class="material-icons">search</i>
+              </button>
+            </div>
           </div>
 
           <div class="form-group">
@@ -98,13 +109,24 @@
               <i class="label-icon">📜</i>
               Policy Number
             </label>
-            <input 
-              type="text" 
-              id="policyNumber"
-              formControlName="policyNumber" 
-              placeholder="Enter policy number"
-              class="form-control"
-            />
+            <div class="input-group">
+              <input 
+                type="text" 
+                id="policyNumber"
+                formControlName="policyNumber" 
+                placeholder="Enter policy number"
+                class="form-control"
+                (keyup.enter)="searchByField('policyNumber')"
+              />
+              <button 
+                type="button" 
+                class="btn btn-secondary search-field-btn"
+                (click)="searchByField('policyNumber')"
+                title="Search by policy number"
+              >
+                <i class="material-icons">search</i>
+              </button>
+            </div>
           </div>
 
           <div class="form-group">
@@ -112,13 +134,24 @@
               <i class="label-icon">👤</i>
               Claimant Name
             </label>
-            <input 
-              type="text" 
-              id="claimantName"
-              formControlName="claimantName" 
-              placeholder="Enter claimant name"
-              class="form-control"
-            />
+            <div class="input-group">
+              <input 
+                type="text" 
+                id="claimantName"
+                formControlName="claimantName" 
+                placeholder="Enter claimant name"
+                class="form-control"
+                (keyup.enter)="searchByField('claimantName')"
+              />
+              <button 
+                type="button" 
+                class="btn btn-secondary search-field-btn"
+                (click)="searchByField('claimantName')"
+                title="Search by claimant name"
+              >
+                <i class="material-icons">search</i>
+              </button>
+            </div>
           </div>
 
           <div class="form-group">
@@ -126,13 +159,24 @@
               <i class="label-icon">🔢</i>
               SSN
             </label>
-            <input 
-              type="text" 
-              id="ssn"
-              formControlName="ssn" 
-              placeholder="XXX-XX-XXXX"
-              class="form-control"
-            />
+            <div class="input-group">
+              <input 
+                type="text" 
+                id="ssn"
+                formControlName="ssn" 
+                placeholder="XXX-XX-XXXX"
+                class="form-control"
+                (keyup.enter)="searchByField('ssn')"
+              />
+              <button 
+                type="button" 
+                class="btn btn-secondary search-field-btn"
+                (click)="searchByField('ssn')"
+                title="Search by SSN"
+              >
+                <i class="material-icons">search</i>
+              </button>
+            </div>
           </div>
 
           <div class="form-group">
@@ -140,12 +184,23 @@
               <i class="label-icon">📅</i>
               Incident Date From
             </label>
-            <input 
-              type="date" 
-              id="incidentDateStart"
-              formControlName="incidentDateStart" 
-              class="form-control"
-            />
+            <div class="input-group">
+              <input 
+                type="date" 
+                id="incidentDateStart"
+                formControlName="incidentDateStart" 
+                class="form-control"
+                (keyup.enter)="searchByField('incidentDateStart')"
+              />
+              <button 
+                type="button" 
+                class="btn btn-secondary search-field-btn"
+                (click)="searchByField('incidentDateStart')"
+                title="Search by incident date"
+              >
+                <i class="material-icons">search</i>
+              </button>
+            </div>
           </div>
 
           <div class="form-group">
@@ -153,12 +208,23 @@
               <i class="label-icon">📅</i>
               Incident Date To
             </label>
-            <input 
-              type="date" 
-              id="incidentDateEnd"
-              formControlName="incidentDateEnd" 
-              class="form-control"
-            />
+            <div class="input-group">
+              <input 
+                type="date" 
+                id="incidentDateEnd"
+                formControlName="incidentDateEnd" 
+                class="form-control"
+                (keyup.enter)="searchByField('incidentDateEnd')"
+              />
+              <button 
+                type="button" 
+                class="btn btn-secondary search-field-btn"
+                (click)="searchByField('incidentDateEnd')"
+                title="Search by incident date"
+              >
+                <i class="material-icons">search</i>
+              </button>
+            </div>
           </div>
 
           <div class="form-group">
@@ -166,18 +232,29 @@
               <i class="label-icon">📊</i>
               Status
             </label>
-            <div class="select-wrapper">
-              <select 
-                id="status"
-                formControlName="status" 
-                multiple
-                class="form-control select-multiple"
+            <div class="input-group">
+              <div class="select-wrapper">
+                <select 
+                  id="status"
+                  formControlName="status" 
+                  multiple
+                  class="form-control select-multiple"
+                  (change)="onFilterChange()"
+                >
+                  <option value="open">📖 Open</option>
+                  <option value="closed">✅ Closed</option>
+                  <option value="pending">⏳ Pending</option>
+                  <option value="settled">💰 Settled</option>
+                </select>
+              </div>
+              <button 
+                type="button" 
+                class="btn btn-secondary search-field-btn"
+                (click)="searchByField('status')"
+                title="Search by status"
               >
-                <option value="open">📖 Open</option>
-                <option value="closed">✅ Closed</option>
-                <option value="pending">⏳ Pending</option>
-                <option value="settled">💰 Settled</option>
-              </select>
+                <i class="material-icons">search</i>
+              </button>
             </div>
           </div>
 
@@ -186,18 +263,160 @@
               <i class="label-icon">🌎</i>
               Loss State
             </label>
-            <div class="select-wrapper">
-              <select 
-                id="lossState"
-                formControlName="lossState" 
-                multiple
-                class="form-control select-multiple"
+            <div class="input-group">
+              <div class="select-wrapper">
+                <select 
+                  id="lossState"
+                  formControlName="lossState" 
+                  multiple
+                  class="form-control select-multiple"
+                  (change)="onFilterChange()"
+                >
+                  <option value="CA">🌴 California</option>
+                  <option value="TX">🤠 Texas</option>
+                  <option value="FL">🏖️ Florida</option>
+                  <option value="NY">🗽 New York</option>
+                </select>
+              </div>
+              <button 
+                type="button" 
+                class="btn btn-secondary search-field-btn"
+                (click)="searchByField('lossState')"
+                title="Search by loss state"
               >
-                <option value="CA">🌴 California</option>
-                <option value="TX">🤠 Texas</option>
-                <option value="FL">🏖️ Florida</option>
-                <option value="NY">🗽 New York</option>
-              </select>
+                <i class="material-icons">search</i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Additional Filters -->
+          <div class="form-group">
+            <label for="program" class="form-label">
+              <i class="label-icon">📋</i>
+              Program
+            </label>
+            <div class="input-group">
+              <div class="select-wrapper">
+                <select 
+                  id="program"
+                  formControlName="program" 
+                  multiple
+                  class="form-control select-multiple"
+                  (change)="onFilterChange()"
+                >
+                  <option value="AUTO">Auto Insurance</option>
+                  <option value="HOME">Home Insurance</option>
+                  <option value="LIFE">Life Insurance</option>
+                  <option value="HEALTH">Health Insurance</option>
+                  <option value="WC">Workers Compensation</option>
+                  <option value="GL">General Liability</option>
+                </select>
+              </div>
+              <button 
+                type="button" 
+                class="btn btn-secondary search-field-btn"
+                (click)="searchByField('program')"
+                title="Search by program"
+              >
+                <i class="material-icons">search</i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="insuranceType" class="form-label">
+              <i class="label-icon">🛡️</i>
+              Insurance Type
+            </label>
+            <div class="input-group">
+              <div class="select-wrapper">
+                <select 
+                  id="insuranceType"
+                  formControlName="insuranceType" 
+                  multiple
+                  class="form-control select-multiple"
+                  (change)="onFilterChange()"
+                >
+                  <option value="1">Comprehensive</option>
+                  <option value="2">Collision</option>
+                  <option value="3">Liability</option>
+                  <option value="4">Auto</option>
+                  <option value="5">Personal Injury Protection</option>
+                  <option value="10">Business Interruption</option>
+                </select>
+              </div>
+              <button 
+                type="button" 
+                class="btn btn-secondary search-field-btn"
+                (click)="searchByField('insuranceType')"
+                title="Search by insurance type"
+              >
+                <i class="material-icons">search</i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="examiner" class="form-label">
+              <i class="label-icon">👨‍💼</i>
+              Examiner
+            </label>
+            <div class="input-group">
+              <div class="select-wrapper">
+                <select 
+                  id="examiner"
+                  formControlName="examiner" 
+                  multiple
+                  class="form-control select-multiple"
+                  (change)="onFilterChange()"
+                >
+                  <option value="hkhan">Haseeb Khan</option>
+                  <option value="jsmith">John Smith</option>
+                  <option value="jdoe">Jane Doe</option>
+                  <option value="EX001">John Smith</option>
+                  <option value="EX002">Jane Doe</option>
+                  <option value="EX003">Bob Johnson</option>
+                  <option value="EX004">Alice Brown</option>
+                </select>
+              </div>
+              <button 
+                type="button" 
+                class="btn btn-secondary search-field-btn"
+                (click)="searchByField('examiner')"
+                title="Search by examiner"
+              >
+                <i class="material-icons">search</i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="organization" class="form-label">
+              <i class="label-icon">🏢</i>
+              Organization
+            </label>
+            <div class="input-group">
+              <div class="select-wrapper">
+                <select 
+                  id="organization"
+                  formControlName="organization" 
+                  multiple
+                  class="form-control select-multiple"
+                  (change)="onFilterChange()"
+                >
+                  <option value="ORG001">Organization 1</option>
+                  <option value="ORG002">Organization 2</option>
+                  <option value="ORG003">Organization 3</option>
+                </select>
+              </div>
+              <button 
+                type="button" 
+                class="btn btn-secondary search-field-btn"
+                (click)="searchByField('organization')"
+                title="Search by organization"
+              >
+                <i class="material-icons">search</i>
+              </button>
             </div>
           </div>
         </div>
@@ -212,25 +431,24 @@
             [disabled]="loading"
             title="Search for claims"
           >
-            <span *ngIf="loading" class="btn-icon loading-spinner">🔄</span>
-            <span *ngIf="!loading" class="btn-icon">🔍</span>
+            <span *ngIf="loading" class="btn-icon loading-spinner"><i class="material-icons">autorenew</i></span>
+            <span *ngIf="!loading" class="btn-icon"><i class="material-icons">search</i></span>
             Search Claims
           </button>
           
           <button 
             type="button" 
-            class="btn btn-secondary"
+            class="btn reset-button"
             (click)="resetForm()"
             [disabled]="loading"
             title="Clear all search filters"
           >
-            <span class="btn-icon">🗑️</span>
             Reset Filters
           </button>
         </div>
 
         <div class="export-actions">
-          <span class="export-label">📤 Export Results:</span>
+          <span class="export-label"><i class="material-icons">file_download</i> Export Results:</span>
           <div class="export-buttons">
             <button 
               type="button" 
@@ -239,7 +457,7 @@
               [disabled]="claims.length === 0 || loading"
               title="Export search results as CSV file"
             >
-              <span class="btn-icon">📊</span>
+              <span class="btn-icon"><i class="material-icons">description</i></span>
               CSV
             </button>
             
@@ -250,7 +468,7 @@
               [disabled]="claims.length === 0 || loading"
               title="Export search results as Excel file"
             >
-              <span class="btn-icon">📈</span>
+              <span class="btn-icon"><i class="material-icons">grid_on</i></span>
               Excel
             </button>
             
@@ -261,13 +479,28 @@
               [disabled]="claims.length === 0 || loading"
               title="Export search results as JSON file"
             >
-              <span class="btn-icon">📋</span>
+              <span class="btn-icon"><i class="material-icons">code</i></span>
               JSON
             </button>
           </div>
         </div>
       </div>
     </form>
+  </div>
+
+  <!-- Claims Grid -->
+  <div class="claims-grid-section">
+    <app-claims-grid 
+      [claims]="claims"
+      [totalRecords]="totalRecords"
+      [currentPage]="currentPage"
+      [pageSize]="pageSize"
+      [loading]="loading"
+      (pageChange)="onPageChange($event)"
+      (claimSelected)="onClaimSelect($event)"
+      (viewClaim)="onViewClaim($event)"
+      (editClaim)="onEditClaim($event)">
+    </app-claims-grid>
   </div>
 
   <!-- Results Section -->
@@ -286,20 +519,10 @@
       
       <div class="results-actions" *ngIf="claims.length > 0">
         <button class="btn btn-outline btn-sm" title="Refresh results">
-          <span class="btn-icon">🔄</span>
+          <span class="btn-icon"><i class="material-icons">refresh</i></span>
           Refresh
         </button>
       </div>
-    </div>
-
-    <div class="claims-grid-wrapper" *ngIf="claims.length > 0">
-      <app-claims-grid 
-        [claims]="claims"
-        [totalRecords]="totalRecords"
-        [currentPage]="currentPage"
-        [pageSize]="pageSize"
-        (pageChange)="onPageChange($event)"
-      ></app-claims-grid>
     </div>
 
     <div class="no-results" *ngIf="claims.length === 0">

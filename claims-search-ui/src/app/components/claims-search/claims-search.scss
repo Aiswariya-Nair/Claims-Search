@@ -65,7 +65,7 @@
   margin-top: 20px;
 }
 
-.filters-row {
+.filters-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 16px;
@@ -113,20 +113,117 @@ select.form-control {
   }
 }
 
-.action-buttons {
+.select-wrapper {
+  position: relative;
+  flex: 1;
+  
+  select[multiple] {
+    height: 120px;
+  }
+}
+
+// Input group for search fields with buttons
+.input-group {
   display: flex;
-  gap: 12px;
-  align-items: center;
+  gap: 8px;
+  
+  .form-control {
+    flex: 1;
+  }
+  
+  .search-field-btn {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover:not(:disabled) {
+      background-color: #e9ecef;
+      border-color: #adb5bd;
+    }
+    
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Responsive adjustments for input groups
+@media (max-width: 768px) {
+  .input-group {
+    flex-direction: column;
+    
+    .search-field-btn {
+      padding: 10px 12px;
+    }
+  }
+  
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.action-section {
+  display: flex;
   flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
   margin-top: 24px;
   padding-top: 20px;
   border-top: 1px solid #eee;
-}
-
-.export-buttons {
-  display: flex;
-  gap: 8px;
-  margin-left: auto;
+  
+  .primary-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .export-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+    
+    .export-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      
+      .material-icons {
+        font-size: 18px;
+        vertical-align: middle;
+      }
+    }
+    
+    .export-buttons {
+      display: flex;
+      gap: 8px;
+    }
+  }
+  
+  // Responsive design for action section
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    
+    .primary-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .export-actions {
+      margin-left: 0;
+      justify-content: center;
+      margin-top: 16px;
+    }
+  }
 }
 
 .btn {
@@ -153,6 +250,11 @@ select.form-control {
   .btn-icon {
     font-size: 16px;
     line-height: 1;
+    
+    .material-icons {
+      font-size: 16px;
+      vertical-align: middle;
+    }
   }
   
   &.btn-primary {
@@ -219,6 +321,17 @@ select.form-control {
       color: white;
       transform: translateY(-1px);
     }
+    
+    // Special styling for reset button
+    &.btn-secondary {
+      color: #6c757d;
+      border-color: #6c757d;
+      
+      &:hover:not(:disabled) {
+        background-color: #6c757d;
+        color: white;
+      }
+    }
   }
   
   &.btn-lg {
@@ -227,6 +340,10 @@ select.form-control {
     
     .btn-icon {
       font-size: 18px;
+      
+      .material-icons {
+        font-size: 18px;
+      }
     }
   }
   
@@ -236,6 +353,22 @@ select.form-control {
     
     .btn-icon {
       font-size: 14px;
+      
+      .material-icons {
+        font-size: 14px;
+      }
+    }
+  }
+  
+  // Specific reset button styling
+  &.reset-button {
+    background-color: transparent;
+    color: #6c757d;
+    border: 1px solid #6c757d;
+    
+    &:hover:not(:disabled) {
+      background-color: #6c757d;
+      color: white;
     }
   }
 }
@@ -307,17 +440,34 @@ select.form-control {
 
 // Responsive design
 @media (max-width: 768px) {
-  .filters-row {
+  .filters-grid {
     grid-template-columns: 1fr;
   }
   
-  .action-buttons {
+  .action-section {
     flex-direction: column;
     align-items: stretch;
     
-    .export-buttons {
+    .primary-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .export-actions {
       margin-left: 0;
       justify-content: center;
+      margin-top: 16px;
     }
+  }
+}
+
+.export-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  
+  .material-icons {
+    font-size: 18px;
+    vertical-align: middle;
   }
 }

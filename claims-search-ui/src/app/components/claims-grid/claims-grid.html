@@ -5,7 +5,14 @@
       <table class="claims-table">
         <thead>
           <tr>
-            <th class="sticky-column">Select</th>
+            <th class="sticky-column">
+              <input 
+                type="checkbox" 
+                class="select-all-checkbox" 
+                (change)="onSelectAll($event)"
+                title="Select all claims on this page"
+              >Select All
+            </th>
             <th>Claim</th>
             <th>Claim ID</th>
             <th>ADJ Office</th>
@@ -44,27 +51,27 @@
             <td>{{ claim.claimNumber }}</td>
             <td>{{ claim.claimId || claim.id || '-' }}</td>
             <td>{{ claim.adjustingOfficeDesc || claim.adjustingOfficeCode || '-' }}</td>
-            <td>{{ claim.claimantName || claim.claimantFirstOrEntityName || '-' }}</td>
+            <td>{{ claim.claimant || claim.claimantName || '-' }}</td>
             <td>{{ claim.ssn ? formatSSN(claim.ssn) : '-' }}</td>
             <td>
-              <span class="status-badge" [class]="'status-' + (claim.status || 'unknown').toLowerCase()">
-                {{ claim.status || 'Unknown' }}
+              <span class="status-badge" [class]="'status-' + (getDisplayStatus(claim) || 'unknown').toLowerCase()">
+                {{ getDisplayStatus(claim) || 'Unknown' }}
               </span>
             </td>
             <td>{{ claim.incidentDate | date:'shortDate' }}</td>
-            <td>{{ claim.type || claim.insuranceTypeDesc || '-' }}</td>
+            <td>{{ claim.claimType || claim.type || claim.insuranceTypeDesc || '-' }}</td>
             <td>{{ claim.brokerName || '-' }}</td>
             <td>{{ claim.insured || claim.insuredName || '-' }}</td>
             <td>{{ claim.supervisor || '-' }}</td>
             <td>{{ claim.accepted || '-' }}</td>
             <td>{{ claim.denied || '-' }}</td>
-            <td>{{ claim.claimClosedDate | date:'shortDate' }}</td>
-            <td>{{ claim.employeeNumber || '-' }}</td>
-            <td>{{ claim.jurisdictionDesc || claim.jurisdictionCode || '-' }}</td>
+            <td>{{ claim.closed || '-' }}</td>
+            <td>{{ claim.employee || claim.employeeNumber || '-' }}</td>
+            <td>{{ claim.jurisdiction || claim.jurisdictionDesc || '-' }}</td>
             <td>{{ claim.jurisdictionClaimNumber || '-' }}</td>
-            <td>{{ '-' }}</td>
-            <td>{{ claim.org1Code || '-' }}</td>
-            <td>{{ claim.org2Code || '-' }}</td>
+            <td>{{ claim.bodyPart || '-' }}</td>
+            <td>{{ claim.org1 || claim.org1Code || '-' }}</td>
+            <td>{{ claim.org2 || claim.org2Code || '-' }}</td>
             <td>{{ claim.addDate | date:'shortDate' }}</td>
             <td class="sticky-actions">
               <div class="action-buttons">
@@ -102,6 +109,7 @@
         [disabled]="currentPage === 1"
         (click)="goToPage(currentPage - 1)"
       >
+        <i class="material-icons">chevron_left</i>
         Previous
       </button>
       
@@ -123,6 +131,7 @@
         (click)="goToPage(currentPage + 1)"
       >
         Next
+        <i class="material-icons">chevron_right</i>
       </button>
     </div>
   </div>

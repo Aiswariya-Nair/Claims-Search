@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class ClaimsService {
             // Extract pagination parameters
             int page = Math.max(0, (Integer) filters.getOrDefault("page", 0));
             int pageSize = Math.min(100, Math.max(1, (Integer) filters.getOrDefault("pageSize", 25)));
-            String sortBy = (String) filters.getOrDefault("sort", "addDate:desc");
+            String sortBy = (String) filters.getOrDefault("sort", "claimNumber:asc");
             
             // Parse sort parameter
             Sort sort = parseSort(sortBy);
@@ -279,15 +280,70 @@ public class ClaimsService {
         }
     }
 
+    public ClaimDto updateClaim(Long claimId, ClaimDto claimDto) {
+        try {
+            // Validate claim ID
+            if (claimId == null || claimId <= 0) {
+                throw new IllegalArgumentException("Invalid claim ID: " + claimId);
+            }
+            
+            // Validate claim data
+            validateClaimDto(claimDto);
+            
+            // Find existing claim
+            Claim existingClaim = claimRepository.findById(claimId)
+                .orElseThrow(() -> new RuntimeException("Claim not found with id: " + claimId));
+            
+            // Update the existing claim with new data
+            updateEntityFromDto(existingClaim, claimDto);
+            
+            // Save updated claim
+            Claim updatedClaim = claimRepository.save(existingClaim);
+            return convertToEnhancedDto(updatedClaim);
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating claim: " + e.getMessage(), e);
+        }
+    }
+
+    private void updateEntityFromDto(Claim claim, ClaimDto dto) {
+        claim.setClaimStatusCode(dto.getClaimStatusCode());
+        claim.setExaminerCode(dto.getExaminerCode());
+        claim.setAdjustingOfficeCode(dto.getAdjustingOfficeCode());
+        claim.setStateCode(dto.getStateCode());
+        claim.setPolicyNumber(dto.getPolicyNumber());
+        claim.setClaimantName(dto.getClaimantName());
+        claim.setSsn(dto.getSsn());
+        claim.setProgramCode(dto.getProgramCode());
+        claim.setInsuranceTypeId(dto.getInsuranceTypeId());
+        claim.setOrganizationCode(dto.getOrganizationCode());
+        claim.setOrg1Code(dto.getOrg1Code());
+        claim.setOrg2Code(dto.getOrg2Code());
+        claim.setOrg3Code(dto.getOrg3Code());
+        claim.setOrg4Code(dto.getOrg4Code());
+        claim.setLossState(dto.getLossState());
+        claim.setLossStateCode(dto.getLossStateCode());
+        claim.setUnderwriterCode(dto.getUnderwriterCode());
+        claim.setJurisdictionCode(dto.getJurisdictionCode());
+        claim.setAffiliateClaimNumber(dto.getAffiliateClaimNumber());
+        claim.setJurisdictionClaimNumber(dto.getJurisdictionClaimNumber());
+        
+        if (dto.getIncidentDate() != null) {
+            claim.setIncidentDate(LocalDateTime.parse(dto.getIncidentDate()));
+        }
+        if (dto.getIncidentReportedDate() != null) {
+            claim.setIncidentReportedDate(LocalDateTime.parse(dto.getIncidentReportedDate()));
+        }
+    }
+
     // Utility methods
     private Sort parseSort(String sortBy) {
         if (sortBy == null || sortBy.isEmpty()) {
-            return Sort.by(Sort.Direction.DESC, "addDate");
+            return Sort.by(Sort.Direction.ASC, "claimNumber");
         }
         
         String[] parts = sortBy.split(":");
         if (parts.length != 2) {
-            return Sort.by(Sort.Direction.DESC, "addDate");
+            return Sort.by(Sort.Direction.ASC, "claimNumber");
         }
         
         String field = parts[0];
@@ -295,6 +351,11 @@ public class ClaimsService {
         
         Sort.Direction sortDirection = "asc".equals(direction) ? 
             Sort.Direction.ASC : Sort.Direction.DESC;
+            
+        // Special handling for claimNumber to ensure proper sorting
+        if ("claimNumber".equals(field)) {
+            return Sort.by(sortDirection, "claimNumber");
+        }
             
         return Sort.by(sortDirection, field);
     }
@@ -371,28 +432,40 @@ public class ClaimsService {
     private ClaimDto convertToEnhancedDto(Claim claim) {
         ClaimDto dto = new ClaimDto(claim);
         
-        // Add enhanced fields
-        dto.setStatus(getStatusDescription(claim.getClaimStatusCode()));
-        dto.setLossState(getStateDescription(claim.getLossStateCode()));
-        dto.setProgramDesc(getProgramDescription(claim.getProgramCode()));
-        dto.setExaminer(getExaminerName(claim.getExaminerCode()));
-        dto.setInsuranceTypeDesc(getInsuranceTypeDescription(claim.getInsuranceTypeId()));
-        dto.setAdjustingOfficeDesc(getAdjustingOfficeDescription(claim.getAdjustingOfficeCode()));
-        dto.setJurisdictionDesc(getJurisdictionDescription(claim.getJurisdictionCode()));
+        // Add enhanced fields with null safety
+        dto.setStatus(claim.getClaimStatusCode() != null ? getStatusDescription(claim.getClaimStatusCode()) : "Unknown");
+        dto.setLossState(claim.getLossStateCode() != null ? getStateDescription(claim.getLossStateCode()) : "Unknown");
+        dto.setProgramDesc(claim.getProgramCode() != null ? getProgramDescription(claim.getProgramCode()) : "Unknown");
+        dto.setExaminer(claim.getExaminerCode() != null ? getExaminerName(claim.getExaminerCode()) : "Unknown");
+        dto.setInsuranceTypeDesc(claim.getInsuranceTypeId() != null ? getInsuranceTypeDescription(claim.getInsuranceTypeId()) : "Unknown");
+        dto.setAdjustingOfficeDesc(claim.getAdjustingOfficeCode() != null ? getAdjustingOfficeDescription(claim.getAdjustingOfficeCode()) : "Unknown");
+        dto.setJurisdictionDesc(claim.getJurisdictionCode() != null ? getJurisdictionDescription(claim.getJurisdictionCode()) : "Unknown");
         
-        // Set formatted dates
+        // Set formatted dates with null safety
         if (claim.getIncidentDate() != null) {
             dto.setIncidentDateStr(claim.getIncidentDate().format(DateTimeFormatter.ofPattern("MM-dd-yyyy hh:mm:ss a")));
+        } else {
+            dto.setIncidentDateStr("N/A");
         }
         if (claim.getAddDate() != null) {
             dto.setAddDateStr(claim.getAddDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a")));
+        } else {
+            dto.setAddDateStr("N/A");
         }
         if (claim.getClaimClosedDate() != null) {
             dto.setClosedDateStr(claim.getClaimClosedDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a")));
+        } else {
+            dto.setClosedDateStr("N/A");
         }
         
         // Set status flag
         dto.setStatusFlag(determineStatusFlag(claim));
+        
+        // Set the additional fields that were missing
+        dto.setClaimant(claim.getClaimantName());
+        dto.setJurisdiction(claim.getLossState());
+        dto.setOrg1(claim.getOrg1Code());
+        dto.setOrg2(claim.getOrg2Code());
         
         return dto;
     }
@@ -466,7 +539,7 @@ public class ClaimsService {
     }
 
     private String getStateDescription(String stateCode) {
-        if (stateCode == null) return "Unknown";
+        if (stateCode == null || stateCode.isEmpty()) return "Unknown";
         
         Map<String, String> stateMap = Map.of(
             "AK", "Alaska",
@@ -477,11 +550,11 @@ public class ClaimsService {
             "IL", "Illinois",
             "WA", "Washington"
         );
-        return stateMap.getOrDefault(stateCode, stateCode);
+        return stateMap.getOrDefault(stateCode.toUpperCase(), stateCode);
     }
 
     private String getProgramDescription(String programCode) {
-        if (programCode == null) return "Unknown";
+        if (programCode == null || programCode.isEmpty()) return "Unknown";
         
         Map<String, String> programMap = Map.of(
             "AUTO", "Auto Insurance",
@@ -491,7 +564,7 @@ public class ClaimsService {
             "WC", "Workers Compensation",
             "GL", "General Liability"
         );
-        return programMap.getOrDefault(programCode, programCode);
+        return programMap.getOrDefault(programCode.toUpperCase(), programCode);
     }
 
     private String getInsuranceTypeDescription(Long typeId) {
@@ -509,7 +582,7 @@ public class ClaimsService {
     }
 
     private String getExaminerName(String examinerCode) {
-        if (examinerCode == null) return "Unknown";
+        if (examinerCode == null || examinerCode.isEmpty()) return "Unknown";
         
         Map<String, String> examinerMap = Map.of(
             "hkhan", "Haseeb Khan",
@@ -518,13 +591,15 @@ public class ClaimsService {
             "EX001", "John Smith",
             "EX002", "Jane Doe",
             "EX003", "Bob Johnson",
-            "EX004", "Alice Brown"
+            "EX004", "Alice Brown",
+            "EXM001", "John Smith",
+            "EXM002", "Jane Doe"
         );
         return examinerMap.getOrDefault(examinerCode, examinerCode);
     }
 
     private String getOrganizationDescription(String orgCode) {
-        if (orgCode == null) return "Unknown";
+        if (orgCode == null || orgCode.isEmpty()) return "Unknown";
         
         Map<String, String> orgMap = Map.of(
             "ORG001", "Organization 1",
@@ -535,7 +610,7 @@ public class ClaimsService {
     }
 
     private String getUnderwriterName(String underwriterCode) {
-        if (underwriterCode == null) return "Unknown";
+        if (underwriterCode == null || underwriterCode.isEmpty()) return "Unknown";
         
         Map<String, String> underwriterMap = Map.of(
             "UW001", "Underwriter 1",
@@ -546,7 +621,7 @@ public class ClaimsService {
     }
 
     private String getAdjustingOfficeDescription(String officeCode) {
-        if (officeCode == null) return "Unknown";
+        if (officeCode == null || officeCode.isEmpty()) return "Unknown";
         
         Map<String, String> officeMap = Map.of(
             "420", "Chicago",
@@ -554,7 +629,10 @@ public class ClaimsService {
             "422", "Los Angeles",
             "ADJ001", "Main Office",
             "ADJ002", "Branch Office",
-            "ADJ003", "Regional Office"
+            "ADJ003", "Regional Office",
+            "AO1", "Chicago Office",
+            "AO2", "Texas Office",
+            "AO3", "Florida Office"
         );
         return officeMap.getOrDefault(officeCode, officeCode);
     }
@@ -568,5 +646,41 @@ public class ClaimsService {
             3L, "Local"
         );
         return jurisdictionMap.getOrDefault(jurisdictionCode, "Jurisdiction " + jurisdictionCode);
+    }
+
+    // Test method to verify sorting with CLM-XXX format
+    public void testSorting() {
+        System.out.println("Testing claim number sorting (CLM-XXX format)...");
+        
+        // Create test data with CLM-XXX format
+        List<String> testNumbers = Arrays.asList(
+            "CLM-010", "CLM-001", "CLM-005", "CLM-002", 
+            "CLM-007", "CLM-003", "CLM-009", "CLM-004", 
+            "CLM-006", "CLM-008"
+        );
+        
+        System.out.println("Before sorting: " + testNumbers);
+        
+        // Sort using database-like sorting (natural string sort)
+        List<String> sorted = testNumbers.stream()
+            .sorted()
+            .collect(Collectors.toList());
+            
+        System.out.println("After sorting: " + sorted);
+        
+        // Also test numeric sorting
+        List<String> numericSorted = testNumbers.stream()
+            .sorted((a, b) -> {
+                try {
+                    int numA = Integer.parseInt(a.replace("CLM-", ""));
+                    int numB = Integer.parseInt(b.replace("CLM-", ""));
+                    return Integer.compare(numA, numB);
+                } catch (NumberFormatException e) {
+                    return a.compareTo(b);
+                }
+            })
+            .collect(Collectors.toList());
+            
+        System.out.println("After numeric sorting: " + numericSorted);
     }
 }

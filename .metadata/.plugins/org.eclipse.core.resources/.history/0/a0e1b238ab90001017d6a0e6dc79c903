@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Claims Project API</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h1 { color: #3366cc; }
+        .endpoint { background: #f5f5f5; padding: 10px; margin: 5px 0; border-left: 4px solid #3366cc; }
+    </style>
+</head>
+<body>
+    <h1>Claims Project API</h1>
+    <p>Spring Boot application is running successfully!</p>
+    
+    <h2>Available Endpoints:</h2>
+    <div class="endpoint"><strong>GET</strong> <a href="/api/claims/">/api/claims/</a> - Get all claims</div>
+    <div class="endpoint"><strong>GET</strong> <a href="/api/claimants/">/api/claimants/</a> - Get all claimants</div>
+    <div class="endpoint"><strong>GET</strong> <a href="/api/coverages/">/api/coverages/</a> - Get all coverage types</div>
+    <div class="endpoint"><strong>GET</strong> <a href="/api/examiners/">/api/examiners/</a> - Get all examiners</div>
+    <div class="endpoint"><strong>GET</strong> <a href="/api/stats/">/api/stats/</a> - Get database statistics</div>
+    <div class="endpoint"><strong>GET</strong> <a href="/api/health/">/api/health/</a> - Health check</div>
+    
+    <p><em>Note: Remember to include the trailing slash (/) in URLs</em></p>
+</body>
+</html>

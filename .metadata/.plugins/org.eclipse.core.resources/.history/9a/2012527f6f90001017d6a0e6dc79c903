@@ -1,0 +1,58 @@
+package com.claim_search.model;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "claim", schema = "public")
+public class Claim {
+    @Id
+    @Column(name = "claim_id")
+    private Long claimId;
+    
+    @Column(name = "version")
+    private Integer version;
+    
+    @Column(name = "claim_number")
+    private String claimNumber;
+    
+    @Column(name = "examiner_id")
+    private String examinerId;
+    
+    @Column(name = "policy_number")
+    private String policyNumber;
+    
+    @Column(name = "policy_state")
+    private String policyState;
+    
+    @Column(name = "loss_date")
+    private LocalDateTime lossDate;
+    
+    @Column(name = "create_ts")
+    private LocalDateTime createTs;
+    
+    // Getters and setters
+    public Long getClaimId() { return claimId; }
+    public void setClaimId(Long claimId) { this.claimId = claimId; }
+    
+    public Integer getVersion() { return version; }
+    public void setVersion(Integer version) { this.version = version; }
+    
+    public String getClaimNumber() { return claimNumber; }
+    public void setClaimNumber(String claimNumber) { this.claimNumber = claimNumber; }
+    
+    public String getExaminerId() { return examinerId; }
+    public void setExaminerId(String examinerId) { this.examinerId = examinerId; }
+    
+    public String getPolicyNumber() { return policyNumber; }
+    public void setPolicyNumber(String policyNumber) { this.policyNumber = policyNumber; }
+    
+    public String getPolicyState() { return policyState; }
+    public void setPolicyState(String policyState) { this.policyState = policyState; }
+    
+    public LocalDateTime getLossDate() { return lossDate; }
+    public void setLossDate(LocalDateTime lossDate) { this.lossDate = lossDate; }
+    
+    public LocalDateTime getCreateTs() { return createTs; }
+    public void setCreateTs(LocalDateTime createTs) { this.createTs = createTs; }
+}
